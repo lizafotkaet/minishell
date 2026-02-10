@@ -6,7 +6,11 @@
 #include <errno.h>
 
 #include <fcntl.h>  // For O_RDONLY, O_WRONLY, O_CREAT, O_TRUNC, O_APPEND
- 
+
+#include <errno.h>
+#include <signal.h>
+
+int g_last_exit_status = 0;
 
 // Placeholder struct-ure for now ()
 typedef struct s_cmd
@@ -19,6 +23,26 @@ typedef struct s_cmd
 	int             is_builtin;
 	struct s_cmd    *next;
 }   t_cmd;
+
+// signal handler for SIGINT (ctrl-C)
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+}
+
+// setup signal handlers for interactive mode
+void	setup_signals(void)
+{
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+
+	// setup SIGINT handler (ctrl-C)
+	sa_int.sa_handler = handle_sigint;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
+	sigaction(SIGINT, &sa_int, NULL);
+}
 
 // check
 int count_cmds(t_cmd *cmd)
@@ -293,6 +317,16 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 
 	while (current)
 	{
+		// handle builtins that must run in parent (cd, export, unset, exit)
+		// only if single command (no pipeline)
+		if (n_cmds == 1 && is_builtin(current->argv[0]))
+		{
+			// handle redirections for builtin
+			// then execute and return
+			status = execute_builtin(current, envp);
+			return (status);
+		}
+	
 		pid = fork();
 		// Create child process (child gets pid=0, parent gets child's PID)
 
@@ -320,36 +354,42 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		}
 
 
-			// STDIN setup: redirect input from previous pipe
-			else if (i > 0)  // Not first command (ls | wc: wc needs input from pipe)
-			{
-				dup2(pipes[i - 1][0], STDIN_FILENO);
-				// Replace stdin with read-end of previous pipe
-				// pipes[i-1][0] = read end of pipe BEFORE this command
-			}
+		// STDIN setup: redirect input from previous pipe
+		else if (i > 0)  // Not first command (ls | wc: wc needs input from pipe)
+		{
+			dup2(pipes[i - 1][0], STDIN_FILENO);
+			// Replace stdin with read-end of previous pipe
+			// pipes[i-1][0] = read end of pipe BEFORE this command
+		}
 
-			// STDOUT setup: redirect output to next pipe
-			else if (i < n_cmds - 1)  // Not last command (ls | wc: ls sends to pipe)
-			{
-				dup2(pipes[i][1], STDOUT_FILENO);
-				// Replace stdout with write-end of current pipe
-				// pipes[i][1] = write end of pipe AFTER this command
-			}
+		// STDOUT setup: redirect output to next pipe
+		else if (i < n_cmds - 1)  // Not last command (ls | wc: ls sends to pipe)
+		{
+			dup2(pipes[i][1], STDOUT_FILENO);
+			// Replace stdout with write-end of current pipe
+			// pipes[i][1] = write end of pipe AFTER this command
+		}
 
-			// Close ALL pipe FDs in child (no longer needed after dup2)
-			int j = 0;
-			while (j < n_cmds - 1)
-			{
-				close(pipes[j][0]);  // Close read end
-				close(pipes[j][1]);  // Close write end
-				j++;
-			}
+		// Close ALL pipe FDs in child (no longer needed after dup2)
+		int j = 0;
+		while (j < n_cmds - 1)
+		{
+			close(pipes[j][0]);  // Close read end
+			close(pipes[j][1]);  // Close write end
+			j++;
+		}
+		// Why? After dup2, original pipe FDs are duplicated to 0/1
+		// Leaving them open wastes FDs and can cause hanging pipes
+
+		// change this line - check if builtin first
+		if (is_builtin(current->argv[0]))
+			exit(execute_builtin(current, envp));
+		else
+			exec_with_path(current->argv[0], current->argv, envp);
 			// Why? After dup2, original pipe FDs are duplicated to 0/1
 			// Leaving them open wastes FDs and can cause hanging pipes
-
-			exec_with_path(current->argv[0], current->argv, envp);
 			// Replace child process with command (never returns on success)
-		}
+	}
 		// Parent continues here (pid != 0)
 
 		current = current->next;
@@ -389,14 +429,21 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		free(pipes);
 	}
 
-	// Return exit code of last command
+	// Return exit code of last command and save for $? expansion
 	if (WIFEXITED(status))
+	{
+		// child exited normally - save and return actual exit code
+		g_last_exit_status = WEXITSTATUS(status);
 		return (WEXITSTATUS(status));
+	}
 	// WIFEXITED checks if child exited normally
 	// WEXITSTATUS extracts actual exit code (0-255)
 
+	// child died from signal - save and return error code
+	g_last_exit_status = 1;
 	return (1);
 	// If child didn't exit normally (signal), return error
+
 }
 
 int main(int argc, char **argv, char **envp)
@@ -413,12 +460,21 @@ int main(int argc, char **argv, char **envp)
 	a.next = &b;
 	a.is_builtin = 0;
 
+	// fix for file not found
+	a.infile = NULL;
+	a.outfile = NULL;
+	a.heredoc_tmpfile = NULL;
+	a.append = 0;
+
 	b.argv = av2;
 	b.next = NULL;
 	b.is_builtin = 0;
+	// fix for file not found
+	b.infile = NULL;
+	b.outfile = NULL;
+	b.heredoc_tmpfile = NULL;
+	b.append = 0;
 
-	// fucking fuck
-	
 	int status = run_pipeline(&a, envp);
 	printf("exit = %d\n", status);
 }
