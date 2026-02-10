@@ -247,6 +247,20 @@ int execute_builtin(t_cmd *cmd, char **envp)
 		// this validates syntax only for now
 		return (0);
 	}
+
+	if (strcmp(cmd->argv[0], "exit") == 0)
+	{
+		int	exit_code;
+		
+		exit_code = 0;
+		// if argument provided, use it as exit code
+		if (cmd->argv[1])
+		{
+			exit_code = atoi(cmd->argv[1]);
+		}
+		// exit terminates the entire process
+		exit(exit_code);
+	}
 	return (1);
 }
 
@@ -405,7 +419,6 @@ int main(int argc, char **argv, char **envp)
 
 	// fucking fuck
 	
-
 	int status = run_pipeline(&a, envp);
 	printf("exit = %d\n", status);
 }
