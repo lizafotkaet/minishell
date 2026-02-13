@@ -10,7 +10,10 @@
 #include <errno.h>
 #include <signal.h>
 
-int g_last_exit_status = 0;
+// int g_last_exit_status = 0;
+// only allowed global - stores signal number for signal handler
+// must only store signal number, nothing else (see subject)
+int	g_signal = 0;
 
 // Placeholder struct-ure for now ()
 typedef struct s_cmd
@@ -27,7 +30,8 @@ typedef struct s_cmd
 // signal handler for SIGINT (ctrl-C)
 void	handle_sigint(int sig)
 {
-	(void)sig;
+	// store signal number in global (only legal use of global)
+	g_signal = sig;
 	write(1, "\n", 1);
 }
 
@@ -466,8 +470,14 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 
 int main(int argc, char **argv, char **envp)
 {
+	int		last_exit_status;
 	(void)argc;
 	(void)argv;
+
+	// tracks exit status of last command for $? expansion
+	// passed to parser so it can replace $? with this value
+	last_exit_status = 0;
+	setup_signals();
 
 	t_cmd a, b;
 
@@ -496,6 +506,7 @@ int main(int argc, char **argv, char **envp)
 	b.heredoc_tmpfile = NULL;
 	b.append = 0;
 
-	int status = run_pipeline(&a, envp);
-	printf("exit = %d\n", status);
+	last_exit_status = run_pipeline(&a, envp);
+
+	printf("exit = %d\n", last_exit_status);
 }
