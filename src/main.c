@@ -42,6 +42,18 @@ void	setup_signals(void)
 	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = 0;
 	sigaction(SIGINT, &sa_int, NULL);
+
+		// setup SIGINT handler (ctrl-C)
+	sa_int.sa_handler = handle_sigint;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
+	sigaction(SIGINT, &sa_int, NULL);
+
+	// setup SIGQUIT handler (ctrl-\) - ignore in interactive mode
+	sa_quit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_flags = 0;
+	sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
 // check
@@ -338,8 +350,14 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		// Fork failed - print error and exit
 
 		if (pid == 0)  // Child process executes this block
-		{
+	{
+	// restore default signal behavior in child
+	// child must die normally on ctrl-C and ctrl-\
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 
+	// handle input redirection (heredoc takes priority over infile)
+	if (current->heredoc_tmpfile)
 			// (heredoc input) ===
 		if (current->heredoc_tmpfile)
 		{
@@ -452,6 +470,9 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 
 	t_cmd a, b;
+
+	// initialize signal handlers before anything else
+	setup_signals();
 
 	char *av1[] = {"ls", NULL};
 	char *av2[] = {"wc", "-l", NULL};
