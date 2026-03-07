@@ -1,3 +1,5 @@
+// to compile: cc -lreadline main.c
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -9,6 +11,9 @@
 
 #include <errno.h>
 #include <signal.h>
+
+#include <readline/readline.h>  // readline() for heredoc input prompt
+#include <readline/history.h>   // add_history() for command history
 
 // int g_last_exit_status = 0;
 // only allowed global - stores signal number for signal handler
@@ -42,12 +47,6 @@ void	setup_signals(void)
 	struct sigaction	sa_quit;
 
 	// setup SIGINT handler (ctrl-C)
-	sa_int.sa_handler = handle_sigint;
-	sigemptyset(&sa_int.sa_mask);
-	sa_int.sa_flags = 0;
-	sigaction(SIGINT, &sa_int, NULL);
-
-		// setup SIGINT handler (ctrl-C)
 	sa_int.sa_handler = handle_sigint;
 	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = 0;
@@ -305,7 +304,38 @@ int execute_builtin(t_cmd *cmd, char **envp)
 }
 
 
+// reads input line by line until delimiter is found, writes to temp file
+// called by parser when << is encountered, returns path to temp file
+char	*create_heredoc(char *delimiter)
+{
+	char	*tmpfile;
+	int		fd;
+	char	*line;
 
+	tmpfile = "/tmp/minishell_heredoc";
+	// open temp file, create if not exists, erase previous content
+	fd = open(tmpfile, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	if (fd == -1)
+	{
+		perror("heredoc");
+		return (NULL);
+	}
+	// readline shows "> " prompt while reading heredoc input
+	line = readline("> ");
+	while (line && strcmp(line, delimiter) != 0)
+	{
+		// write line content and newline to temp file
+		write(fd, line, strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+		line = readline("> ");
+	}
+	free(line);
+	close(fd);
+	return (tmpfile);
+}
+
+// Complete run_pipeline implementation
 
 // Complete run_pipeline implementation
 int run_pipeline(t_cmd *cmd_list, char **envp)
@@ -314,11 +344,17 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 	int		**pipes;       // Array of pipe pairs [read_fd, write_fd]
 	int		i;             // Loop counter / command index
 	pid_t	pid;           // Process ID from fork()
+	pid_t	last_pid;      // PID of last command (for correct $? tracking)
 	int		status;        // Exit status from wait()
+	status = 0;            // initialize to 0 - prevents undefined behavior if no children ran
+
 	t_cmd	*current;      // Iterator through linked list
+	// int g_last_exit_status; // sorry i forgot this one
 
 	n_cmds = count_cmds(cmd_list);
 	// Count total commands (ls | wc = 2 commands)
+
+	last_pid = -1;  // initialize to invalid pid
 
 	pipes = alloc_pipes(n_cmds);
 	// Allocate n_cmds-1 pipes (2 commands need 1 pipe)
@@ -333,6 +369,14 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 
 	while (current)
 	{
+		// skip commands with no arguments (empty input after parsing)
+		if (!current->argv || !current->argv[0])
+		{
+			current = current->next;
+			i++;
+			continue;
+		}
+
 		// handle builtins that must run in parent (cd, export, unset, exit)
 		// only if single command (no pipeline)
 		if (n_cmds == 1 && is_builtin(current->argv[0]))
@@ -356,12 +400,11 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		if (pid == 0)  // Child process executes this block
 	{
 	// restore default signal behavior in child
-	// child must die normally on ctrl-C and ctrl-\
+	// child must die normally on ctrl-C and ctrl-
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 
 	// handle input redirection (heredoc takes priority over infile)
-	if (current->heredoc_tmpfile)
 			// (heredoc input) ===
 		if (current->heredoc_tmpfile)
 		{
@@ -375,7 +418,20 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 			close(fd_in);
 		}
 
-
+		// regular < redirection, only if no heredoc (heredoc takes priority)
+		else if (current->infile)
+		{
+			int fd_in = open(current->infile, O_RDONLY);
+			if (fd_in == -1)
+			{
+				perror(current->infile);
+				exit(1);
+			}
+			// redirect stdin to file, close original fd (stdin copy remains)
+			dup2(fd_in, STDIN_FILENO);
+			close(fd_in);
+		}
+		// no file redirection - read from previous command's pipe output
 		// STDIN setup: redirect input from previous pipe
 		else if (i > 0)  // Not first command (ls | wc: wc needs input from pipe)
 		{
@@ -385,10 +441,29 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		}
 
 		// STDOUT setup: redirect output to next pipe
-		else if (i < n_cmds - 1)  // Not last command (ls | wc: ls sends to pipe)
+		
+		// handle output file redirection (> and >>)
+		if (current->outfile)
+		{
+			int fd_out;
+			// append mode (>>) keeps existing content, trunc (>) erases it
+			if (current->append)
+				fd_out = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			else
+				fd_out = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd_out == -1)
+			{
+				perror(current->outfile);
+				exit(1);
+			}
+			// redirect stdout to file, close original fd (stdout copy remains)
+			dup2(fd_out, STDOUT_FILENO);
+			close(fd_out);
+		}
+		// no file redirection - write to next command's pipe input
+		else if (i < n_cmds - 1)
 		{
 			dup2(pipes[i][1], STDOUT_FILENO);
-			// Replace stdout with write-end of current pipe
 			// pipes[i][1] = write end of pipe AFTER this command
 		}
 
@@ -413,7 +488,10 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 			// Replace child process with command (never returns on success)
 	}
 		// Parent continues here (pid != 0)
-
+		// track pid of last command for accurate $? exit status
+		if (i == n_cmds - 1)
+			last_pid = pid;
+			
 		current = current->next;
 		i++;
 		// Move to next command in linked list
@@ -431,11 +509,32 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 
 	// Wait for all children to finish
 	i = 0;
-	while (i < n_cmds)
+
+	// problem was: collects any child in any order. status after the loop may not be from the last command.
+	// while (i < n_cmds)
+	// {
+	// 	wait(&status);  // Blocks until any child exits
+	// 	i++;
+	// }
+
+	// wait for all children, but track last command's exit status specifically
+	i = 0;
+
+	// wait for last command first to capture its exit status for $?
+	if (last_pid != -1)
+		waitpid(last_pid, &status, 0);
+	// then wait for remaining children (order doesn't matter for them)
+
+
+		i = 0;
+	while (i < n_cmds - 1)  // n_cmds - 1 because we already waited for last_pid
 	{
-		wait(&status);  // Blocks until any child exits
+		// waitpid(-1) waits for any child, same as wait()
+		// but lets us check which pid just exited
+		waitpid(-1, &status, 0);
 		i++;
 	}
+
 	// Note: This waits for ANY child, not in order
 	// Last wait() will capture last command's exit status
 
@@ -455,14 +554,14 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 	if (WIFEXITED(status))
 	{
 		// child exited normally - save and return actual exit code
-		g_last_exit_status = WEXITSTATUS(status);
+		// g_last_exit_status = WEXITSTATUS(status);
 		return (WEXITSTATUS(status));
 	}
 	// WIFEXITED checks if child exited normally
 	// WEXITSTATUS extracts actual exit code (0-255)
 
 	// child died from signal - save and return error code
-	g_last_exit_status = 1;
+	// g_last_exit_status = 1;
 	return (1);
 	// If child didn't exit normally (signal), return error
 
@@ -477,7 +576,6 @@ int main(int argc, char **argv, char **envp)
 	// tracks exit status of last command for $? expansion
 	// passed to parser so it can replace $? with this value
 	last_exit_status = 0;
-	setup_signals();
 
 	t_cmd a, b;
 
