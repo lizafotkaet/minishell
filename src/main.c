@@ -608,3 +608,5 @@ int main(int argc, char **argv, char **envp)
 
 	printf("exit = %d\n", last_exit_status);
 }
+
+// test new gadget connection
