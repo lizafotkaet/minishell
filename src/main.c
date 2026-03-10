@@ -150,6 +150,15 @@ void	exec_with_path(char *cmd, char **argv, char **envp)
 	{
 		snprintf(full, sizeof(full), "%s/%s", dir, cmd);
 		execve(full, argv, envp);
+
+		// if execve failed due to permission, exit 126 (not 127)
+		if (errno == EACCES)
+		{
+			free(dup);
+			perror(cmd);
+			exit(126);
+		}
+
 		dir = strtok(NULL, ":");
 	}
 	free(dup);
@@ -607,6 +616,21 @@ int main(int argc, char **argv, char **envp)
 	last_exit_status = run_pipeline(&a, envp);
 
 	printf("exit = %d\n", last_exit_status);
+
+
+	// voorlopige example readline loop for parser integration:
+	// while (1)
+	// {
+	//     char *line = readline("minishell$ ");
+	//     if (!line)  // ctrl-D pressed (EOF)
+	//         break;
+	//     if (*line)  // non-empty line
+	//         add_history(line);
+	//     // parser converts line to t_cmd list
+	//     // last_exit_status = run_pipeline(cmd_list, envp);
+	//     free(line);
+	// }
+	// printf("exit\n");
 }
 
 // test new gadget connection
