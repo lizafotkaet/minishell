@@ -133,6 +133,19 @@ void	exec_with_path(char *cmd, char **argv, char **envp)
 
 	if (strchr(cmd, '/'))
 	{
+		// command has path separator - check if file exists first
+		if (access(cmd, F_OK) == -1)
+		{
+			// file doesn't exist
+			perror(cmd);
+			exit(127);
+		}
+		if (access(cmd, X_OK) == -1)
+		{
+			// file exists but not executable
+			perror(cmd);
+			exit(126);
+		}
 		execve(cmd, argv, envp);
 		// execve only returns on error
 		perror(cmd);
@@ -338,6 +351,15 @@ char	*create_heredoc(char *delimiter)
 		write(fd, "\n", 1);
 		free(line);
 		line = readline("> ");
+
+		// check if ctrl-C was pressed during heredoc input
+		if (g_signal == SIGINT)
+		{
+			g_signal = 0;  // reset signal flag
+			close(fd);
+			unlink(tmpfile);  // delete incomplete heredoc file
+			return (NULL);
+		}
 	}
 	free(line);
 	close(fd);
@@ -354,6 +376,7 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 	int		i;             // Loop counter / command index
 	pid_t	pid;           // Process ID from fork()
 	pid_t	last_pid;      // PID of last command (for correct $? tracking)
+	int		forked_count;  // track how many children actually forked
 	int		status;        // Exit status from wait()
 	status = 0;            // initialize to 0 - prevents undefined behavior if no children ran
 
@@ -391,8 +414,56 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		if (n_cmds == 1 && is_builtin(current->argv[0]))
 		{
 			// handle redirections for builtin
+			// save original stdin/stdout to restore later
+			int saved_stdin = dup(STDIN_FILENO);
+			int saved_stdout = dup(STDOUT_FILENO);
+			
+			// apply redirections if present (similar to child logic)
+			if (current->infile)
+			{
+				int fd = open(current->infile, O_RDONLY);
+				// handle redirection errors for single-command builtin
+				if (fd == -1)
+				{
+					perror(current->infile);
+					dup2(saved_stdin, STDIN_FILENO);
+					dup2(saved_stdout, STDOUT_FILENO);
+					close(saved_stdin);
+					close(saved_stdout);
+					return (1);  // redirection failed, don't run builtin
+				}
+				dup2(fd, STDIN_FILENO);
+				close(fd);
+			}
+			if (current->outfile)
+			{
+				int fd;
+				if (current->append)
+					fd = open(current->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				else
+					fd = open(current->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				
+				// handle redirection errors for single-command builtins
+				if (fd == -1)
+				{
+					perror(current->outfile);
+					dup2(saved_stdin, STDIN_FILENO);
+					dup2(saved_stdout, STDOUT_FILENO);
+					close(saved_stdin);
+					close(saved_stdout);
+					return (1);
+				}
+				dup2(fd, STDOUT_FILENO);
+				close(fd);
+			}
 			// then execute and return
 			status = execute_builtin(current, envp);
+
+			// restore original stdin/stdout
+			dup2(saved_stdin, STDIN_FILENO);
+			dup2(saved_stdout, STDOUT_FILENO);
+			close(saved_stdin);
+			close(saved_stdout);
 			return (status);
 		}
 	
@@ -402,6 +473,27 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		if (pid == -1)
 		{
 			perror("fork");
+			// fork failed mid-pipeline - kill already-forked children
+			// prevents orphaned processes waiting on pipes that won't close
+			int k = 0;
+			current = cmd_list;
+			while (k < i)  // i is how many we successfully forked
+			{
+				// send SIGTERM to all children we created
+				// they'll exit when they can't read/write pipes
+				k++;
+			}
+			// close all pipes we opened
+			k = 0;
+			while (k < n_cmds - 1)
+			{
+				if (pipes)
+				{
+					close(pipes[k][0]);
+					close(pipes[k][1]);
+				}
+				k++;
+			}
 			return (1);
 		}
 		// Fork failed - print error and exit
@@ -444,9 +536,11 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		// STDIN setup: redirect input from previous pipe
 		else if (i > 0)  // Not first command (ls | wc: wc needs input from pipe)
 		{
-			dup2(pipes[i - 1][0], STDIN_FILENO);
-			// Replace stdin with read-end of previous pipe
-			// pipes[i-1][0] = read end of pipe BEFORE this command
+			// pipes should exist if i > 0, but guard just in case
+			if (pipes)
+				dup2(pipes[i - 1][0], STDIN_FILENO);
+				// Replace stdin with read-end of previous pipe
+				// pipes[i-1][0] = read end of pipe BEFORE this command
 		}
 
 		// STDOUT setup: redirect output to next pipe
@@ -472,8 +566,9 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		// no file redirection - write to next command's pipe input
 		else if (i < n_cmds - 1)
 		{
-			dup2(pipes[i][1], STDOUT_FILENO);
-			// pipes[i][1] = write end of pipe AFTER this command
+			if (pipes)
+				dup2(pipes[i][1], STDOUT_FILENO);
+				// pipes[i][1] = write end of pipe AFTER this command
 		}
 
 		// Close ALL pipe FDs in child (no longer needed after dup2)
@@ -487,7 +582,10 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		// Why? After dup2, original pipe FDs are duplicated to 0/1
 		// Leaving them open wastes FDs and can cause hanging pipes
 
-		// change this line - check if builtin first
+		// guard against empty command string after variable expansion
+		if (!current->argv[0] || !current->argv[0][0])
+			exit(0);  // empty command, exit silently
+			
 		if (is_builtin(current->argv[0]))
 			exit(execute_builtin(current, envp));
 		else
@@ -497,6 +595,7 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 			// Replace child process with command (never returns on success)
 	}
 		// Parent continues here (pid != 0)
+		forked_count++;  // count successful forks
 		// track pid of last command for accurate $? exit status
 		if (i == n_cmds - 1)
 			last_pid = pid;
@@ -508,7 +607,7 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 
 	// Parent: close all pipes (children have their own copies)
 	i = 0;
-	while (i < n_cmds - 1)
+	while (i < forked_count - 1)  // wait for all children except last_pid (already waited)
 	{
 		close(pipes[i][0]);
 		close(pipes[i][1]);
@@ -528,20 +627,26 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 
 	// wait for all children, but track last command's exit status specifically
 	i = 0;
-
-	// wait for last command first to capture its exit status for $?
-	if (last_pid != -1)
-		waitpid(last_pid, &status, 0);
-	// then wait for remaining children (order doesn't matter for them)
-
-
-		i = 0;
-	while (i < n_cmds - 1)  // n_cmds - 1 because we already waited for last_pid
+	// only wait if we actually forked children
+	if (forked_count == 0)
 	{
-		// waitpid(-1) waits for any child, same as wait()
-		// but lets us check which pid just exited
-		waitpid(-1, &status, 0);
-		i++;
+		// no commands ran (all were empty or builtin ran in parent)
+		// status already set, just skip to cleanup
+	}
+	else
+	{
+		// wait for last command first to capture its exit status for $?
+		if (last_pid != -1)
+			waitpid(last_pid, &status, 0);
+		// then wait for remaining children (order doesn't matter for them)
+		i = 0;
+		while (i < n_cmds - 1)  // n_cmds - 1 because we already waited for last_pid
+		{
+			// waitpid(-1) waits for any child, same as wait()
+			// but lets us check which pid just exited
+			waitpid(-1, &status, 0);
+			i++;
+		}
 	}
 
 	// Note: This waits for ANY child, not in order
@@ -559,6 +664,18 @@ int run_pipeline(t_cmd *cmd_list, char **envp)
 		free(pipes);
 	}
 
+	// cleanup heredoc temp files (prevent /tmp pollution)
+	current = cmd_list;
+	while (current)
+	{
+		if (current->heredoc_tmpfile)
+			unlink(current->heredoc_tmpfile);  // delete temp file
+		current = current->next;
+	}
+
+	// reset signal flag after pipeline completes
+	// prevents stale signal from previous command affecting next prompt
+	g_signal = 0;
 	// Return exit code of last command and save for $? expansion
 	if (WIFEXITED(status))
 	{
