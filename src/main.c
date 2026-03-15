@@ -45,13 +45,11 @@ void	setup_signals(void)
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
-
 	// setup SIGINT handler (ctrl-C)
 	sa_int.sa_handler = handle_sigint;
 	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = 0;
 	sigaction(SIGINT, &sa_int, NULL);
-
 	// setup SIGQUIT handler (ctrl-\) - ignore in interactive mode
 	sa_quit.sa_handler = SIG_IGN;
 	sigemptyset(&sa_quit.sa_mask);
