@@ -1,0 +1,20 @@
+[
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/buffer.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/buffer.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/env.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/env.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/env_parse.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/env_parse.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/pipeline.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/pipeline.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/quotes.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/quotes.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/string_vector.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/string_vector.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/substitute_env.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/substitute_env.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/token.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/token.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/tokenize.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/tokenize.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/whitespace.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/whitespace.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "src/debug_alloc.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-c", "src/debug_alloc.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "tests/test_buffer.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-I", "testlib", "-c", "tests/test_buffer.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "tests/test_pipeline.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-I", "testlib", "-c", "tests/test_pipeline.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "tests/test_quotes.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-I", "testlib", "-c", "tests/test_quotes.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "tests/test_skip_word.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-I", "testlib", "-c", "tests/test_skip_word.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "tests/test_string_vector.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-I", "testlib", "-c", "tests/test_string_vector.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "tests/test_substitute_env.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-I", "testlib", "-c", "tests/test_substitute_env.c"] },
+  { "directory": "/home/sergei-vorobev/minishell3", "file": "tests/test_tokenize.c", "arguments": ["cc", "-Wall", "-Wextra", "-Werror", "-I", "include", "-I", "libft", "-I", "testlib", "-c", "tests/test_tokenize.c"] }
+]
