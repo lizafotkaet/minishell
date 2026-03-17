@@ -1,20 +1,16 @@
-// to compile: cc -lreadline main.c
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <errno.h>
-
 #include <fcntl.h>  // For O_RDONLY, O_WRONLY, O_CREAT, O_TRUNC, O_APPEND
-
 #include <errno.h>
 #include <signal.h>
-
 #include <readline/readline.h>  // readline() for heredoc input prompt
 #include <readline/history.h>   // add_history() for command history
 
+// to compile: cc -lreadline main.c
 // int g_last_exit_status = 0;
 // only allowed global - stores signal number for signal handler
 // must only store signal number, nothing else (see subject)
@@ -43,7 +39,7 @@ void	handle_sigint(int sig)
 // setup signal handlers for interactive mode
 void	setup_signals(void)
 {
-	struct sigaction	sa_int;
+	struct sigaction    sa_int;
 	struct sigaction	sa_quit;
 	// setup SIGINT handler (ctrl-C)
 	sa_int.sa_handler = handle_sigint;
