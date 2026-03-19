@@ -1,6 +1,6 @@
-#include "env.h"
-#include "debug_alloc.h"
-#include "../libft/libft.h"
+#include "../../include/env.h"
+#include "../../include/debug_alloc.h"
+#include "../../libft/libft.h"
 
 /*
 ** Constructs a NULL-terminated char ** from the env.

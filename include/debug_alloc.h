@@ -9,7 +9,7 @@
 */
 
 # include <stddef.h>
-# include "libft.h"
+# include "../libft/libft.h"
 
 # ifdef DEBUG
 #  include <stdio.h>

@@ -1,4 +1,4 @@
-#include "tokenize.h"
+#include "../../include/tokenize.h"
 #include <stdbool.h>
 
 bool	is_whitespace(char c)

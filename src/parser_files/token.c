@@ -1,6 +1,6 @@
-#include "token.h"
-#include "../libft/libft.h"
-#include "debug_alloc.h"
+#include "../../include/token.h"
+#include "../../libft/libft.h"
+#include "../../include/debug_alloc.h"
 
 /*
 ** Free the content of a single token if it was allocated.

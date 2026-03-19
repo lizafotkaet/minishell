@@ -1,7 +1,7 @@
-#include "tokenize.h"
-#include "pipeline.h"
-#include "../libft/libft.h"
-#include "debug_alloc.h"
+#include "../../include/tokenize.h"
+#include "../../include/pipeline.h"
+#include "../../libft/libft.h"
+#include "../../include/debug_alloc.h"
 
 /*
 ** Append a single token to `vec` for the operator at `it`.

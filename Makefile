@@ -25,25 +25,25 @@ SRCS    = src/exec_files/signals.c      \
           src/exec_files/pipeline.c     \
           src/exec_files/redirect_builtin.c \
           src/main.c	\
-		  $(SRC_DIR)/quotes.c \
-		  $(SRC_DIR)/whitespace.c \
-		  $(SRC_DIR)/tokenize.c \
-		  $(SRC_DIR)/tokenize_build.c \
-		  $(SRC_DIR)/env.c \
-		  $(SRC_DIR)/env_pair.c \
-		  $(SRC_DIR)/env_parse.c \
-		  $(SRC_DIR)/substitute_env.c \
-		  $(SRC_DIR)/expand_env.c \
-		  $(SRC_DIR)/buffer.c \
-		  $(SRC_DIR)/token.c \
-		  $(SRC_DIR)/pipeline.c \
-		  $(SRC_DIR)/pipeline_utils.c \
-		  $(SRC_DIR)/pipeline_print.c \
-		  $(SRC_DIR)/command.c \
-		  $(SRC_DIR)/command_print.c \
-		  $(SRC_DIR)/string_vector.c \
-		  $(SRC_DIR)/heredoc.c \
-		  $(SRC_DIR)/debug_alloc.c
+		  src/parser_files/quotes.c \
+		  src/parser_files/whitespace.c \
+		  src/parser_files/tokenize.c \
+		  src/parser_files/tokenize_build.c \
+		  src/parser_files/env.c \
+		  src/parser_files/env_pair.c \
+		  src/parser_files/env_parse.c \
+		  src/parser_files/substitute_env.c \
+		  src/parser_files/expand_env.c \
+		  src/parser_files/buffer.c \
+		  src/parser_files/token.c \
+		  src/parser_files/pipeline.c \
+		  src/parser_files/pipeline_utils.c \
+		  src/parser_files/pipeline_print.c \
+		  src/parser_files/command.c \
+		  src/parser_files/command_print.c \
+		  src/parser_files/string_vector.c \
+		  src/parser_files/heredoc.c \
+		  src/parser_files/debug_alloc.c
 
 OBJS    = $(SRCS:.c=.o)
 #OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

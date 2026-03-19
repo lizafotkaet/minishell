@@ -1,5 +1,5 @@
-#include "buffer.h"
-#include "debug_alloc.h"
+#include "../../include/buffer.h"
+#include "../../include/debug_alloc.h"
 
 /*
 ** Initialise a new t_buffer with BUFFER_INITIAL_CAPACITY.

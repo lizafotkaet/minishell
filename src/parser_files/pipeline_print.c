@@ -1,6 +1,6 @@
-#include "pipeline_print.h"
-#include "command_print.h"
-#include "../libft/libft.h"
+#include "../../include/pipeline_print.h"
+#include "../../include/command_print.h"
+#include "../../libft/libft.h"
 
 static bool	buf_str(t_buffer *buf, const char *s)
 {

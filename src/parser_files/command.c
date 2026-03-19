@@ -1,6 +1,6 @@
-#include "command.h"
-#include "../libft/libft.h"
-#include "debug_alloc.h"
+#include "../../include/command.h"
+#include "../../include/../libft/libft.h"
+#include "../../include/debug_alloc.h"
 
 /*
 ** Returns true if token_type is a redirect type (not pipe, not word).

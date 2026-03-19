@@ -1,7 +1,7 @@
-#include "pipeline.h"
-#include "buffer.h"
-#include "../libft/libft.h"
-#include "debug_alloc.h"
+#include "../../include/pipeline.h"
+#include "../../include/buffer.h"
+#include "../../libft/libft.h"
+#include "../../include/debug_alloc.h"
 #include <unistd.h>
 
 static bool	line_is_delim(const char *line, size_t len, const char *delim)

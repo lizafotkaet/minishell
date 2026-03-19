@@ -1,6 +1,6 @@
-#include "env.h"
-#include "debug_alloc.h"
-#include "../libft/libft.h"
+#include "../../include/env.h"
+#include "../../include/debug_alloc.h"
+#include "../../libft/libft.h"
 
 /*
 ** Set the previous command exit code in the env.

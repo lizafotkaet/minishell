@@ -1,4 +1,4 @@
-#include "debug_alloc.h"
+#include "../../include/debug_alloc.h"
 
 #ifdef DEBUG
 int	g_alloc_counter = 0;

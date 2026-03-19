@@ -1,8 +1,8 @@
-#include "env.h"
-#include "quotes.h"
-#include "buffer.h"
-#include "substitute_env_internal.h"
-#include "../libft/libft.h"
+#include "../../include/env.h"
+#include "../../include/quotes.h"
+#include "../../include/buffer.h"
+#include "../../include/substitute_env_internal.h"
+#include "../../libft/libft.h"
 
 /*
 ** Process a single-quoted segment: copy everything literally

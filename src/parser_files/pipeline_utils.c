@@ -1,6 +1,6 @@
-#include "pipeline.h"
-#include "../libft/libft.h"
-#include "debug_alloc.h"
+#include "../../include/pipeline.h"
+#include "../../libft/libft.h"
+#include "../../include/debug_alloc.h"
 
 void	free_pipeline(t_pipeline *pipeline)
 {

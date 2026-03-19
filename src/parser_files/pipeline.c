@@ -1,7 +1,7 @@
-#include "pipeline.h"
-#include "tokenize.h"
-#include "../libft/libft.h"
-#include "debug_alloc.h"
+#include "../../include/pipeline.h"
+#include "../../include/tokenize.h"
+#include "../../libft/libft.h"
+#include "../../include/debug_alloc.h"
 
 
 /*

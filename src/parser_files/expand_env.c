@@ -1,6 +1,6 @@
-#include "substitute_env_internal.h"
-#include "../libft/libft.h"
-#include "debug_alloc.h"
+#include "../../include/substitute_env_internal.h"
+#include "../../libft/libft.h"
+#include "../../include/debug_alloc.h"
 
 /*
 ** Returns the length of the variable name starting at `s`.

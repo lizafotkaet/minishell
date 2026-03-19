@@ -1,5 +1,5 @@
-#include "tokenize.h"
-#include "../libft/libft.h"
+#include "../../include/tokenize.h"
+#include "../../libft/libft.h"
 
 /*
 ** Returns true if `c` is the start of an operator token (|, <, >).

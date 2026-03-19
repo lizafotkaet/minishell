@@ -1,6 +1,6 @@
-#include "command_print.h"
-#include "string_vector.h"
-#include "../libft/libft.h"
+#include "../../include/command_print.h"
+#include "../../include/string_vector.h"
+#include "../../include/../libft/libft.h"
 
 static bool	buf_str(t_buffer *buf, const char *s)
 {

@@ -1,6 +1,6 @@
-#include "string_vector.h"
-#include "../libft/libft.h"
-#include "debug_alloc.h"
+#include "../../include/string_vector.h"
+#include "../../libft/libft.h"
+#include "../../include/debug_alloc.h"
 
 /*
 ** Allocate a new t_string_vector with STRING_VECTOR_INITIAL_CAPACITY.
