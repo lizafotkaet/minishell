@@ -1,7 +1,19 @@
-#include "../../include/pipeline.h"
-#include "../../include/buffer.h"
-#include "../../libft/libft.h"
-#include "../../include/debug_alloc.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:02:39 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:02:41 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "pipeline.h"
+#include "buffer.h"
+#include "libft.h"
+#include "debug_alloc.h"
 #include <unistd.h>
 
 static bool	line_is_delim(const char *line, size_t len, const char *delim)

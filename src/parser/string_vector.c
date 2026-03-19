@@ -1,6 +1,18 @@
-#include "../../include/string_vector.h"
-#include "../../libft/libft.h"
-#include "../../include/debug_alloc.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   string_vector.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:03:10 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:03:12 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "string_vector.h"
+#include "libft.h"
+#include "debug_alloc.h"
 
 /*
 ** Allocate a new t_string_vector with STRING_VECTOR_INITIAL_CAPACITY.

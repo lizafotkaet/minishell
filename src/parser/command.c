@@ -1,6 +1,18 @@
-#include "../../include/command.h"
-#include "../../include/../libft/libft.h"
-#include "../../include/debug_alloc.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:01:50 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:01:53 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "command.h"
+#include "libft.h"
+#include "debug_alloc.h"
 
 /*
 ** Returns true if token_type is a redirect type (not pipe, not word).

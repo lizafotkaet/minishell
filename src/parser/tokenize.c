@@ -1,5 +1,17 @@
-#include "../../include/tokenize.h"
-#include "../../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:03:36 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:03:38 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "tokenize.h"
+#include "libft.h"
 
 /*
 ** Returns true if `c` is the start of an operator token (|, <, >).

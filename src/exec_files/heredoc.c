@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "minishell.h"
 
 static int	heredoc_read_loop(int fd, char *delimiter, char *tmpfile)
 {

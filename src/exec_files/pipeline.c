@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "minishell.h"
 
 
 static void	cleanup_heredocs(t_cmd *cmd_list)

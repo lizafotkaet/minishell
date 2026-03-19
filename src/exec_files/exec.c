@@ -1,12 +1,11 @@
-#include "../minishell.h"
+#include "minishell.h"
 
 static void	run_child_process(t_cmd *cur, int i, int n_cmds,
 				int **pipes, char **envp)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	apply_input_redir(cur, i, pipes);
-	apply_output_redir(cur, i, n_cmds, pipes);
+	apply_all_redirs(cur, i, n_cmds, pipes);
 	close_all_pipes(pipes, n_cmds);
 	if (!cur->argv[0] || !cur->argv[0][0])
 		exit(0);

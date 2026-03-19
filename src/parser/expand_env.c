@@ -1,6 +1,18 @@
-#include "../../include/substitute_env_internal.h"
-#include "../../libft/libft.h"
-#include "../../include/debug_alloc.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_env.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:02:33 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:02:35 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "substitute_env_internal.h"
+#include "libft.h"
+#include "debug_alloc.h"
 
 /*
 ** Returns the length of the variable name starting at `s`.

@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "minishell.h"
 
 int	g_signal = 0;          /* defined here, extern'd in the header */
 

@@ -1,6 +1,18 @@
-#include "../../include/env.h"
-#include "../../include/debug_alloc.h"
-#include "../../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_pair.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:02:11 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:02:13 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "env.h"
+#include "debug_alloc.h"
+#include "libft.h"
 
 /*
 ** Returns a zeroed-out key-value pair.

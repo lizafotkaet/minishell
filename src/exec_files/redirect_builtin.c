@@ -1,39 +1,53 @@
-#include "../minishell.h"
+#include "minishell.h"
 
-static int	apply_builtin_input(t_cmd *cmd)
+static int	apply_all_builtin_redirs(t_cmd *cmd)
 {
+	int	j;
 	int	fd;
+	int	flags;
 
-	if (!cmd->infile)
-		return (0);
-	fd = open(cmd->infile, O_RDONLY);
-	if (fd == -1)
+	if (cmd->heredoc_tmpfile)
 	{
-		perror(cmd->infile);
-		return (-1);
+		fd = open(cmd->heredoc_tmpfile, O_RDONLY);
+		if (fd == -1)
+		{
+			perror(cmd->heredoc_tmpfile);
+			return (-1);
+		}
+		dup2(fd, STDIN_FILENO);
+		close(fd);
 	}
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	return (0);
-}
-
-static int	apply_builtin_output(t_cmd *cmd)
-{
-	int	fd;
-
-	if (!cmd->outfile)
-		return (0);
-	if (cmd->append)
-		fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else
-		fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
+	j = 0;
+	while (j < cmd->n_redirs)
 	{
-		perror(cmd->outfile);
-		return (-1);
+		if (cmd->redirs[j].type == REDIR_IN)
+		{
+			fd = open(cmd->redirs[j].file, O_RDONLY);
+			if (fd == -1)
+			{
+				perror(cmd->redirs[j].file);
+				return (-1);
+			}
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+		}
+		else
+		{
+			if (cmd->redirs[j].type == REDIR_APPEND)
+				flags = O_WRONLY | O_CREAT | O_APPEND;
+			else
+				flags = O_WRONLY | O_CREAT | O_TRUNC;
+			fd = open(cmd->redirs[j].file, flags, 0644);
+			if (fd == -1)
+			{
+				perror(cmd->redirs[j].file);
+				return (-1);
+			}
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+		}
+		j++;
 	}
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
 	return (0);
 }
 
@@ -45,7 +59,7 @@ int	handle_parent_builtin(t_cmd *cmd, char **envp)
 
 	saved_in = dup(STDIN_FILENO);
 	saved_out = dup(STDOUT_FILENO);
-	if (apply_builtin_input(cmd) == -1 || apply_builtin_output(cmd) == -1)
+	if (apply_all_builtin_redirs(cmd) == -1)
 	{
 		dup2(saved_in, STDIN_FILENO);
 		dup2(saved_out, STDOUT_FILENO);
@@ -54,6 +68,7 @@ int	handle_parent_builtin(t_cmd *cmd, char **envp)
 		return (1);
 	}
 	status = execute_builtin(cmd, envp);
+	fflush(stdout);
 	dup2(saved_in, STDIN_FILENO);
 	dup2(saved_out, STDOUT_FILENO);
 	close(saved_in);

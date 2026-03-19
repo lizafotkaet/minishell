@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "minishell.h"
 
 static void	exec_with_slash(char *cmd, char **argv, char **envp)
 {

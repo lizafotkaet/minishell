@@ -1,8 +1,20 @@
-#include "../../include/env.h"
-#include "../../include/quotes.h"
-#include "../../include/buffer.h"
-#include "../../include/substitute_env_internal.h"
-#include "../../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   substitute_env.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:03:18 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:03:20 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "env.h"
+#include "quotes.h"
+#include "buffer.h"
+#include "substitute_env_internal.h"
+#include "libft.h"
 
 /*
 ** Process a single-quoted segment: copy everything literally

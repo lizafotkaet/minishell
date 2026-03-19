@@ -1,6 +1,18 @@
-#include "../../include/token.h"
-#include "../../libft/libft.h"
-#include "../../include/debug_alloc.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:03:24 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:03:26 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "token.h"
+#include "libft.h"
+#include "debug_alloc.h"
 
 /*
 ** Free the content of a single token if it was allocated.

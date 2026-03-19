@@ -1,7 +1,19 @@
-#include "../../include/tokenize.h"
-#include "../../include/pipeline.h"
-#include "../../libft/libft.h"
-#include "../../include/debug_alloc.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize_build.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:03:31 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:03:32 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "tokenize.h"
+#include "pipeline.h"
+#include "libft.h"
+#include "debug_alloc.h"
 
 /*
 ** Append a single token to `vec` for the operator at `it`.
@@ -82,30 +94,57 @@ RESULT(t_token_vector)	tokenize_string(const char *input)
 	return (SUCCESS(t_token_vector, vec));
 }
 
+static bool	has_quotes(const char *s)
+{
+	while (*s)
+	{
+		if (*s == '\'' || *s == '"')
+			return (true);
+		s++;
+	}
+	return (false);
+}
+
 /*
 ** Substitute environment variables in word tokens only.
+** Removes words that expand to empty string and had no quotes.
 */
 bool	substitute_all_envs(t_token_vector *tokens, t_env env)
 {
 	size_t				i;
+	size_t				j;
+	bool				unquoted;
 	RESULT(t_char_ptr)	r;
 
 	if (tokens == NULL)
 		return (false);
 	i = 0;
+	j = 0;
 	while (i < tokens->size)
 	{
 		if (tokens->data[i].token_type == E_WORD)
 		{
+			unquoted = !has_quotes(tokens->data[i].content);
 			r = substitute_env(tokens->data[i].content, env);
 			if (r.is_error)
 				return (false);
+			if (r.value[0] == '\0' && unquoted)
+			{
+				FREE(r.value);
+				if (tokens->data[i].allocated)
+					FREE(tokens->data[i].content);
+				i++;
+				continue ;
+			}
 			if (tokens->data[i].allocated)
 				FREE(tokens->data[i].content);
 			tokens->data[i].content = r.value;
 			tokens->data[i].allocated = true;
 		}
+		tokens->data[j] = tokens->data[i];
+		j++;
 		i++;
 	}
+	tokens->size = j;
 	return (true);
 }

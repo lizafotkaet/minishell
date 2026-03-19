@@ -1,6 +1,18 @@
-#include "../../include/env.h"
-#include "../../include/debug_alloc.h"
-#include "../../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:02:25 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:02:27 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "env.h"
+#include "debug_alloc.h"
+#include "libft.h"
 
 /*
 ** Set the previous command exit code in the env.

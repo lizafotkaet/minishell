@@ -1,7 +1,19 @@
-#include "../../include/pipeline.h"
-#include "../../include/tokenize.h"
-#include "../../libft/libft.h"
-#include "../../include/debug_alloc.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:02:58 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:03:00 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "pipeline.h"
+#include "tokenize.h"
+#include "libft.h"
+#include "debug_alloc.h"
 
 
 /*

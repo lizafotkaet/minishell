@@ -1,6 +1,18 @@
-#include "../../include/command_print.h"
-#include "../../include/string_vector.h"
-#include "../../include/../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_print.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:01:44 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:01:46 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "command_print.h"
+#include "string_vector.h"
+#include "libft.h"
 
 static bool	buf_str(t_buffer *buf, const char *s)
 {

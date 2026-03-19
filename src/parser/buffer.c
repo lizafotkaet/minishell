@@ -1,5 +1,17 @@
-#include "../../include/buffer.h"
-#include "../../include/debug_alloc.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   buffer.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/19 13:01:33 by liza              #+#    #+#             */
+/*   Updated: 2026/03/19 13:01:37 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "buffer.h"
+#include "debug_alloc.h"
 
 /*
 ** Initialise a new t_buffer with BUFFER_INITIAL_CAPACITY.

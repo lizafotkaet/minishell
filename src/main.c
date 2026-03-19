@@ -10,6 +10,24 @@
 **   t_pipeline  → array of t_command (parser output)
 **   t_cmd       → linked list         (executor input)
 */
+static void	free_cmd_list(t_cmd *head);
+
+static int	count_redirs(t_command *cmd)
+{
+	int	n;
+	int	j;
+
+	n = 0;
+	j = 0;
+	while (j < cmd->redirect_count)
+	{
+		if (cmd->redirects[j].type != E_HEREDOC)
+			n++;
+		j++;
+	}
+	return (n);
+}
+
 static t_cmd	*pipeline_to_cmd_list(t_pipeline *pl)
 {
 	t_cmd		*head;
@@ -17,40 +35,45 @@ static t_cmd	*pipeline_to_cmd_list(t_pipeline *pl)
 	t_command	*cmd;
 	int			i;
 	int			j;
- 
+	int			k;
+
 	head = NULL;
 	i = pl->command_count - 1;
 	while (i >= 0)
 	{
 		node = (t_cmd *)calloc(1, sizeof(t_cmd));
 		if (!node)
-		{
-			while (head)
-			{
-				node = head->next;
-				free(head);
-				head = node;
-			}
-			return (NULL);
-		}
+			return (free_cmd_list(head), NULL);
 		cmd = &pl->commands[i];
 		node->argv = cmd->argv;
-		node->is_builtin = 0;
-		node->infile = NULL;
-		node->outfile = NULL;
-		node->heredoc_tmpfile = NULL;
-		node->append = 0;
+		node->n_redirs = count_redirs(cmd);
+		if (node->n_redirs > 0)
+		{
+			node->redirs = malloc(sizeof(t_redir_exec) * node->n_redirs);
+			if (!node->redirs)
+				return (free(node), free_cmd_list(head), NULL);
+		}
+		k = 0;
 		j = 0;
 		while (j < cmd->redirect_count)
 		{
 			if (cmd->redirects[j].type == E_REDIR_IN)
-				node->infile = cmd->redirects[j].target;
+			{
+				node->redirs[k].file = cmd->redirects[j].target;
+				node->redirs[k].type = REDIR_IN;
+				k++;
+			}
 			else if (cmd->redirects[j].type == E_REDIR_OUT)
-				node->outfile = cmd->redirects[j].target;
+			{
+				node->redirs[k].file = cmd->redirects[j].target;
+				node->redirs[k].type = REDIR_OUT;
+				k++;
+			}
 			else if (cmd->redirects[j].type == E_REDIR_APPEND)
 			{
-				node->outfile = cmd->redirects[j].target;
-				node->append = 1;
+				node->redirs[k].file = cmd->redirects[j].target;
+				node->redirs[k].type = REDIR_APPEND;
+				k++;
 			}
 			else if (cmd->redirects[j].type == E_HEREDOC)
 			{
@@ -66,14 +89,15 @@ static t_cmd	*pipeline_to_cmd_list(t_pipeline *pl)
 	}
 	return (head);
 }
- 
+
 static void	free_cmd_list(t_cmd *head)
 {
 	t_cmd	*next;
- 
+
 	while (head)
 	{
 		next = head->next;
+		free(head->redirs);
 		free(head);
 		head = next;
 	}
