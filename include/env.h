@@ -4,7 +4,6 @@
 # include <stddef.h>
 # include "result.h"
 
-
 typedef struct s_env_key_value_pair
 {
 	char	*key;
@@ -22,7 +21,6 @@ bool						m_env_key_value_pair_key_equals(
 RESULT(t_env_key_value_pair)	parse_env_var(const char *str);
 RESULT(t_char_ptr)			m_env_key_value_pair_to_c_str(
 								t_env_key_value_pair pair);
-
 
 # define ENV_INITIAL_CAPACITY 32
 

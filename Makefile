@@ -1,7 +1,8 @@
 NAME    = minishell
 
 CC      = cc
-CFLAGS  = -Wall -Wextra -Werror
+# CFLAGS  = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I include -I libft
 LDFLAGS = -lreadline
 INCLUDES	= -I include -I libft
 
@@ -56,9 +57,10 @@ $(LIBFT):
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
 
+# %.o: %.c minishell.h
+# 	$(CC) $(CFLAGS) -c $< -o $@
 %.o: %.c minishell.h
-	$(CC) $(CFLAGS) -c $< -o $@
-
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # 	@mkdir -p $(OBJ_DIR)
@@ -66,9 +68,12 @@ $(NAME): $(OBJS) $(LIBFT)
 
 # clean:
 # 	rm -f $(OBJS)
+# clean:
+# 	$(MAKE) -C $(LIBFT_DIR) clean
+# 	rm -rf $(OBJ_DIR)
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
-	rm -rf $(OBJ_DIR)
+	rm -f $(OBJS)
 
 # fclean: clean
 fclean: clean
