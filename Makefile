@@ -3,11 +3,13 @@ CC = cc
 SRC_DIR = source
 OBJS_DIR  = objects
 LIB_DIR = lib
-LIBFT_REPO = https://github.com/lizafotkaet/libft
+LIBFT_REPO = https://github.com/lizafotkaet/libft #my libft
 LIBFT_COMMIT = d20ca5b
 HEADERS	:= -I ./include -I $(LIB_DIR)/libft
 CFLAGS = -Wall -Wextra -Werror -g 
 LDFLAGS = -lreadline
+
+#THE REST IS TO BE EDITED
 
 SRCS =	$(SRC_DIR)/main.c \
 		$(SRC_DIR)/exec/builtins/cd.c \
