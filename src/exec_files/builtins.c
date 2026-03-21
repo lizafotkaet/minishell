@@ -66,7 +66,7 @@ static void	update_pwd_env(t_env *env, const char *new_pwd)
 		m_env_key_value_pair_free(&pair);
 }
 
-int	builtin_pwd(t_env *env)
+int	builtin_pwd(void)
 {
 	char	cwd[1024];
 
@@ -76,8 +76,6 @@ int	builtin_pwd(t_env *env)
 		return (1);
 	}
 	printf("%s\n", cwd);
-	if (env)
-		update_pwd_env(env, cwd);
 	return (0);
 }
 
@@ -100,8 +98,10 @@ int	builtin_env(t_env *env)
 	return (0);
 }
 
-int	builtin_cd(t_cmd *cmd)
+int	builtin_cd(t_cmd *cmd, t_env *env)
 {
+	char	cwd[1024];
+
 	if (!cmd->argv[1] || cmd->argv[2])
 	{
 		write(2, "cd: wrong number of arguments\n", 30);
@@ -112,5 +112,7 @@ int	builtin_cd(t_cmd *cmd)
 		perror("cd");
 		return (1);
 	}
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		update_pwd_env(env, cwd);
 	return (0);
 }

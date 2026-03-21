@@ -110,11 +110,11 @@ int	execute_builtin(t_cmd *cmd, t_env *env)
 	if (strcmp(cmd->argv[0], "echo") == 0)
 		return (builtin_echo(cmd));
 	if (strcmp(cmd->argv[0], "pwd") == 0)
-		return (builtin_pwd(env));
+		return (builtin_pwd());
 	if (strcmp(cmd->argv[0], "env") == 0)
 		return (builtin_env(env));
 	if (strcmp(cmd->argv[0], "cd") == 0)
-		return (builtin_cd(cmd));
+		return (builtin_cd(cmd, env));
 	if (strcmp(cmd->argv[0], "export") == 0)
 		return (builtin_export(cmd, env));
 	if (strcmp(cmd->argv[0], "unset") == 0)

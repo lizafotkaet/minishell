@@ -72,9 +72,9 @@ int		is_builtin(char *cmd);
 int		execute_builtin(t_cmd *cmd, t_env *env);
 // builtins_2.c
 int		builtin_echo(t_cmd *cmd);
-int		builtin_pwd(t_env *env);
+int		builtin_pwd(void);
 int		builtin_env(t_env *env);
-int		builtin_cd(t_cmd *cmd);
+int		builtin_cd(t_cmd *cmd, t_env *env);
 // heredoc.c
 char	*create_heredoc(char *delimiter);
 // redirect.c
