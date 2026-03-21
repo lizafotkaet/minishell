@@ -38,6 +38,13 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
+typedef struct s_exec_ctx
+{
+	int		i;
+	int		n_cmds;
+	int		**pipes;
+}	t_exec_ctx;
+
 // signals.c
 void	handle_sigint(int sig);
 void	setup_signals(void);
@@ -64,8 +71,12 @@ void	close_all_pipes(int **pipes, int n_cmds);
 //redirect_builtin.c
 int		handle_parent_builtin(t_cmd *cmd, char **envp);
 // exec.c
-pid_t	exec_one_cmd(t_cmd *cmd, int i, int n_cmds, int **pipes, char **envp);
+pid_t	exec_one_cmd(t_cmd *cmd, t_exec_ctx *ctx, char **envp);
 // pipeline.c
 int		run_pipeline(t_cmd *cmd_list, char **envp);
+// cmd_convert.c
+t_cmd	*pipeline_to_cmd_list(t_pipeline *pl);
+// main.c
+void	free_cmd_list(t_cmd *head);
 
 #endif
