@@ -74,15 +74,9 @@ static bool	parse_env_loop(char **envp, t_env *env)
 
 RESULT(t_env)	parse_env(char **envp)
 {
-	int		n;
 	t_env	env;
 
-	n = 0;
-	while (envp != NULL && envp[n] != NULL)
-		n++;
 	env.capacity = ENV_INITIAL_CAPACITY;
-	if (n > env.capacity)
-		env.capacity = n;
 	env.pairs = ALLOC(t_env_key_value_pair, env.capacity);
 	if (env.pairs == NULL)
 		return (ERROR(t_env));
