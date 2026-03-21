@@ -6,10 +6,11 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:01:33 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:01:37 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 04:19:08 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "buffer.h"
 #include "debug_alloc.h"
 
@@ -18,6 +19,7 @@
 ** The buffer is always null-terminated: data[0] == '\0' after creation.
 ** Returns SUCCESS with the buffer, or ERROR on allocation failure.
 */
+
 RESULT(t_buffer)	m_buffer_new(void)
 {
 	t_buffer	buf;
@@ -37,6 +39,7 @@ RESULT(t_buffer)	m_buffer_new(void)
 ** large enough, then copies existing content into the new allocation.
 ** Returns true on success, false on malloc failure (buffer unchanged).
 */
+
 static bool	buffer_grow(t_buffer *buf, size_t required)
 {
 	size_t	new_cap;
@@ -63,6 +66,7 @@ static bool	buffer_grow(t_buffer *buf, size_t required)
 ** The buffer is null-terminated after the write.
 ** Returns true on success, false on allocation failure.
 */
+
 bool	m_buffer_write(t_buffer *buf, const char *src, size_t n)
 {
 	if (n == 0)
@@ -80,6 +84,7 @@ bool	m_buffer_write(t_buffer *buf, const char *src, size_t n)
 ** The caller is responsible for freeing the returned string.
 ** Returns NULL on allocation failure.
 */
+
 char	*m_buffer_read(t_buffer *buf)
 {
 	char	*copy;
@@ -91,6 +96,7 @@ char	*m_buffer_read(t_buffer *buf)
 /*
 ** Free the buffer's underlying data.
 */
+
 void	m_buffer_free(t_buffer *buf)
 {
 	if (!buf || !buf->data)

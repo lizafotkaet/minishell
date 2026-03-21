@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:03:10 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:03:12 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 15:24:08 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 ** The data array is null-terminated: data[0] == NULL after creation.
 ** Returns SUCCESS with the vector, or ERROR on allocation failure.
 */
+
 RESULT(t_string_vector)	m_string_vector_new(void)
 {
 	t_string_vector	vec;
@@ -38,6 +39,7 @@ RESULT(t_string_vector)	m_string_vector_new(void)
 ** large enough, then copies existing pointers into the new allocation.
 ** Returns true on success, false on malloc failure (vector unchanged).
 */
+
 static bool	vector_grow(t_string_vector *vec, size_t required)
 {
 	size_t	new_cap;
@@ -63,6 +65,7 @@ static bool	vector_grow(t_string_vector *vec, size_t required)
 ** The vector stays null-terminated (data[size] == NULL).
 ** Returns true on success, false on allocation failure.
 */
+
 bool	m_string_vector_append(t_string_vector *vec, const char *s)
 {
 	char	*dup;
@@ -81,6 +84,7 @@ bool	m_string_vector_append(t_string_vector *vec, const char *s)
 /*
 ** Return the string at `index`, or NULL if index is out of bounds.
 */
+
 const char	*m_string_vector_at(t_string_vector *vec, size_t index)
 {
 	if (index >= vec->size)
@@ -91,6 +95,7 @@ const char	*m_string_vector_at(t_string_vector *vec, size_t index)
 /*
 ** Free the vector, all stored strings, and the vector struct itself.
 */
+
 void	m_string_vector_free(t_string_vector *vec)
 {
 	size_t	i;

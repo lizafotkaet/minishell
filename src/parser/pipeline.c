@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:58 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:03:00 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 15:23:32 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 #include "libft.h"
 #include "debug_alloc.h"
 
-
 /*
 ** Count how many pipe tokens are in the vector.
 */
+
 static int	count_pipes(t_token_vector tokens)
 {
 	size_t	i;
@@ -35,10 +35,10 @@ static int	count_pipes(t_token_vector tokens)
 	return (n);
 }
 
-
 /*
 ** Build all commands from the token vector, splitting by pipes.
 */
+
 static bool	build_all_commands(t_token_vector *tokens, t_pipeline *pl)
 {
 	size_t	i;
@@ -67,7 +67,6 @@ static bool	build_all_commands(t_token_vector *tokens, t_pipeline *pl)
 	return (true);
 }
 
-
 /*
 ** Create a pipeline from a raw input string.
 **
@@ -81,6 +80,7 @@ static bool	build_all_commands(t_token_vector *tokens, t_pipeline *pl)
 ** Returns RESULT(t_pipeline): SUCCESS with the pipeline,
 ** or ERROR on syntax error or allocation failure.
 */
+
 RESULT(t_pipeline)	create_pipeline(const char *input, t_env env)
 {
 	RESULT(t_token_vector)	tr;

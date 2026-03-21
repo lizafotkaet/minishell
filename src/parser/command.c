@@ -6,9 +6,10 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:01:50 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:01:53 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 04:21:25 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "command.h"
 #include "libft.h"
@@ -17,6 +18,7 @@
 /*
 ** Returns true if token_type is a redirect type (not pipe, not word).
 */
+
 static bool	is_redirect_type(t_token_type type)
 {
 	return (type == E_REDIR_IN || type == E_REDIR_OUT
@@ -27,6 +29,7 @@ static bool	is_redirect_type(t_token_type type)
 ** Count the number of redirects and words in a segment
 ** [start, end) of the token vector.
 */
+
 static bool	count_cmd_parts(t_token_vector *tokens, size_t start,
 		size_t end, t_command *cmd)
 {
@@ -67,6 +70,7 @@ static bool	fill_one_redirect(t_redirect *redir, t_token *tok)
 ** Fill the argv and redirects arrays of a command from
 ** a token segment [start, end).
 */
+
 static bool	fill_command(t_token_vector *tokens, size_t start,
 		size_t end, t_command *cmd)
 {
@@ -101,6 +105,7 @@ static bool	fill_command(t_token_vector *tokens, size_t start,
 ** Build a single t_command from a token segment [start, end).
 ** Returns false on syntax error or allocation failure.
 */
+
 bool	build_command(t_token_vector *tokens, size_t start,
 		size_t end, t_command *cmd)
 {
