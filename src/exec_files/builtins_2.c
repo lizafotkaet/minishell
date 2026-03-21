@@ -47,11 +47,29 @@ static void	export_one(const char *arg, t_env *env, int *exit_code)
 	m_env_append(env, r.value);
 }
 
+static void	print_export(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (i < env->count)
+	{
+		printf("declare -x %s=\"%s\"\n",
+			env->pairs[i].key, env->pairs[i].value);
+		i++;
+	}
+}
+
 static int	builtin_export(t_cmd *cmd, t_env *env)
 {
 	int	i;
 	int	exit_code;
 
+	if (!cmd->argv[1])
+	{
+		print_export(env);
+		return (0);
+	}
 	i = 1;
 	exit_code = 0;
 	while (cmd->argv[i])
