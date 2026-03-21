@@ -46,26 +46,57 @@ int	builtin_echo(t_cmd *cmd)
 	return (0);
 }
 
-int	builtin_pwd(void)
+static void	update_pwd_env(t_env *env, const char *new_pwd)
+{
+	t_env_key_value_pair	pair;
+	const char				*old;
+
+	old = m_env_find_value(*env, "PWD");
+	pair.key = ft_strdup("OLDPWD");
+	pair.value = ft_strdup(old);
+	if (pair.key && pair.value)
+		m_env_append(env, pair);
+	else
+		m_env_key_value_pair_free(&pair);
+	pair.key = ft_strdup("PWD");
+	pair.value = ft_strdup(new_pwd);
+	if (pair.key && pair.value)
+		m_env_append(env, pair);
+	else
+		m_env_key_value_pair_free(&pair);
+}
+
+int	builtin_pwd(t_env *env)
 {
 	char	cwd[1024];
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
-		printf("%s\n", cwd);
-		return (0);
+		perror("pwd");
+		return (1);
 	}
-	perror("pwd");
-	return (1);
+	printf("%s\n", cwd);
+	if (env)
+		update_pwd_env(env, cwd);
+	return (0);
 }
 
-int	builtin_env(char **envp)
+int	builtin_env(t_env *env)
 {
-	int	i;
+	int					i;
+	t_result_t_char_ptr	r;
 
 	i = 0;
-	while (envp[i])
-		printf("%s\n", envp[i++]);
+	while (i < env->count)
+	{
+		r = m_env_key_value_pair_to_c_str(env->pairs[i]);
+		if (!r.is_error)
+		{
+			printf("%s\n", r.value);
+			FREE(r.value);
+		}
+		i++;
+	}
 	return (0);
 }
 

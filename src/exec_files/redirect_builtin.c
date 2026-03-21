@@ -63,7 +63,7 @@ static int	apply_all_builtin_redirs(t_cmd *cmd)
 	return (0);
 }
 
-int	handle_parent_builtin(t_cmd *cmd, char **envp)
+int	handle_parent_builtin(t_cmd *cmd, t_env *env)
 {
 	int	saved_in;
 	int	saved_out;
@@ -79,7 +79,7 @@ int	handle_parent_builtin(t_cmd *cmd, char **envp)
 		close(saved_out);
 		return (1);
 	}
-	status = execute_builtin(cmd, envp);
+	status = execute_builtin(cmd, env);
 	fflush(stdout);
 	dup2(saved_in, STDIN_FILENO);
 	dup2(saved_out, STDOUT_FILENO);

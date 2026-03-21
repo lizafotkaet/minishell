@@ -38,7 +38,7 @@ static int	process_line(char *line, t_env *env)
 	cmd_list = pipeline_to_cmd_list(&pl);
 	if (cmd_list)
 	{
-		last_exit = run_pipeline(cmd_list, m_env_to_char_ptr(*env));
+		last_exit = run_pipeline(cmd_list, env);
 		m_env_set_exit_code(env, last_exit);
 		free_cmd_list(cmd_list);
 	}

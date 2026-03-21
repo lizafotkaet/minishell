@@ -69,11 +69,11 @@ void	free_pipes(int **pipes, int n_cmds);
 void	exec_with_path(char *cmd, char **argv, char **envp);
 // builtins.c
 int		is_builtin(char *cmd);
-int		execute_builtin(t_cmd *cmd, char **envp);
+int		execute_builtin(t_cmd *cmd, t_env *env);
 // builtins_2.c
 int		builtin_echo(t_cmd *cmd);
-int		builtin_pwd(void);
-int		builtin_env(char **envp);
+int		builtin_pwd(t_env *env);
+int		builtin_env(t_env *env);
 int		builtin_cd(t_cmd *cmd);
 // heredoc.c
 char	*create_heredoc(char *delimiter);
@@ -81,11 +81,11 @@ char	*create_heredoc(char *delimiter);
 void	apply_all_redirs(t_cmd *current, int i, int n_cmds, int **pipes);
 void	close_all_pipes(int **pipes, int n_cmds);
 //redirect_builtin.c
-int		handle_parent_builtin(t_cmd *cmd, char **envp);
+int		handle_parent_builtin(t_cmd *cmd, t_env *env);
 // exec.c
-pid_t	exec_one_cmd(t_cmd *cmd, t_exec_ctx *ctx, char **envp);
+pid_t	exec_one_cmd(t_cmd *cmd, t_exec_ctx *ctx, t_env *env);
 // pipeline.c
-int		run_pipeline(t_cmd *cmd_list, char **envp);
+int		run_pipeline(t_cmd *cmd_list, t_env *env);
 // cmd_convert.c
 t_cmd	*pipeline_to_cmd_list(t_pipeline *pl);
 // main.c

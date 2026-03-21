@@ -48,7 +48,7 @@ static int	wait_all_children(pid_t last_pid, int forked_count)
 }
 
 // what's with this hidious notation on 65??
-static int	pipeline_loop(t_cmd *cmd_list, int n_cmds, int **pipes, char **envp)
+static int	pipeline_loop(t_cmd *cmd_list, int n_cmds, int **pipes, t_env *env)
 {
 	t_cmd	*current;
 	pid_t	last_pid;
@@ -62,9 +62,9 @@ static int	pipeline_loop(t_cmd *cmd_list, int n_cmds, int **pipes, char **envp)
 	current = cmd_list;
 	while (current)
 	{
-		pid = exec_one_cmd(current, &(t_exec_ctx){i, n_cmds, pipes}, envp);
+		pid = exec_one_cmd(current, &(t_exec_ctx){i, n_cmds, pipes}, env);
 		if (pid == -2)
-			return (handle_parent_builtin(current, envp));
+			return (handle_parent_builtin(current, env));
 		if (pid == -1)
 			return (1);
 		forked_count += (pid > 0);
@@ -77,7 +77,7 @@ static int	pipeline_loop(t_cmd *cmd_list, int n_cmds, int **pipes, char **envp)
 	return (wait_all_children(last_pid, forked_count));
 }
 
-int	run_pipeline(t_cmd *cmd_list, char **envp)
+int	run_pipeline(t_cmd *cmd_list, t_env *env)
 {
 	int		n_cmds;
 	int		**pipes;
@@ -87,7 +87,7 @@ int	run_pipeline(t_cmd *cmd_list, char **envp)
 	pipes = alloc_pipes(n_cmds);
 	if (n_cmds > 1 && !pipes)
 		return (1);
-	status = pipeline_loop(cmd_list, n_cmds, pipes, envp);
+	status = pipeline_loop(cmd_list, n_cmds, pipes, env);
 	free_pipes(pipes, n_cmds);
 	cleanup_heredocs(cmd_list);
 	g_signal = 0;

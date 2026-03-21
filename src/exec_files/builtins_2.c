@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:01:22 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/21 17:10:45 by asrichar         ###   ########.fr       */
+/*   Updated: 2026/03/21 22:11:00 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,37 +30,44 @@ static int	is_valid_identifier(const char *s, size_t len)
 	return (1);
 }
 
-static int	builtin_export(t_cmd *cmd)
+static void	export_one(const char *arg, t_env *env, int *exit_code)
 {
-	int		i;
-	int		exit_code;
-	char	*eq;
-	size_t	name_len;
+	RESULT(t_env_key_value_pair)	r;
+
+	r = parse_env_var(arg);
+	if (r.is_error)
+		return ;
+	if (!is_valid_identifier(r.value.key, strlen(r.value.key)))
+	{
+		write(2, "export: invalid format\n", 23);
+		*exit_code = 1;
+		m_env_key_value_pair_free(&r.value);
+		return ;
+	}
+	m_env_append(env, r.value);
+}
+
+static int	builtin_export(t_cmd *cmd, t_env *env)
+{
+	int	i;
+	int	exit_code;
 
 	i = 1;
 	exit_code = 0;
 	while (cmd->argv[i])
-	{
-		eq = strchr(cmd->argv[i], '=');
-		if (eq)
-			name_len = (size_t)(eq - cmd->argv[i]);
-		else
-			name_len = strlen(cmd->argv[i]);
-		if (!is_valid_identifier(cmd->argv[i], name_len))
-		{
-			write(2, "export: invalid format\n", 23);
-			exit_code = 1;
-		}
-		i++;
-	}
+		export_one(cmd->argv[i++], env, &exit_code);
 	return (exit_code);
 }
 
-// static int	builtin_unset(t_cmd *cmd)
-// {
-// 	(void)cmd;
-// 	return (0);
-// }
+static int	builtin_unset(t_cmd *cmd, t_env *env)
+{
+	int	i;
+
+	i = 1;
+	while (cmd->argv[i])
+		m_env_remove(env, cmd->argv[i++]);
+	return (0);
+}
 
 static int	is_numeric(const char *s)
 {
@@ -98,23 +105,20 @@ static int	builtin_exit(t_cmd *cmd)
 // — for correctness use atoll and cast down:
 // exit((unsigned char)(long long)atoll(cmd->argv[1]));
 
-int	execute_builtin(t_cmd *cmd, char **envp)
+int	execute_builtin(t_cmd *cmd, t_env *env)
 {
 	if (strcmp(cmd->argv[0], "echo") == 0)
 		return (builtin_echo(cmd));
 	if (strcmp(cmd->argv[0], "pwd") == 0)
-		return (builtin_pwd());
+		return (builtin_pwd(env));
 	if (strcmp(cmd->argv[0], "env") == 0)
-		return (builtin_env(envp));
+		return (builtin_env(env));
 	if (strcmp(cmd->argv[0], "cd") == 0)
 		return (builtin_cd(cmd));
 	if (strcmp(cmd->argv[0], "export") == 0)
-		return (builtin_export(cmd));
+		return (builtin_export(cmd, env));
 	if (strcmp(cmd->argv[0], "unset") == 0)
-	{
-		(void)cmd;
-		return (0);
-	}
+		return (builtin_unset(cmd, env));
 	if (strcmp(cmd->argv[0], "exit") == 0)
 		return (builtin_exit(cmd));
 	return (1);
