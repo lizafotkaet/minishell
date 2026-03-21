@@ -1,6 +1,18 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/21 17:15:55 by asrichar          #+#    #+#             */
+/*   Updated: 2026/03/21 17:28:17 by asrichar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	g_signal = 0;          /* defined here, extern'd in the header */
+#include "../../include/minishell.h"
+
+int	g_signal = 0; /* defined here, extern'd in the header */
 
 void	handle_sigint(int sig)
 {

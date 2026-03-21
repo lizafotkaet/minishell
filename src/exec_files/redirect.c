@@ -1,10 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/21 17:15:23 by asrichar          #+#    #+#             */
+/*   Updated: 2026/03/21 17:22:34 by asrichar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-/*
-** Apply all redirects for a command in the original order.
-** Heredoc (if any) is applied before explicit redirects.
-** After all redirects, fall back to pipe if no explicit stdin/stdout.
-*/
+// Apply all redirects for a command in the original order.
+// Heredoc is applied before explicit redirects.
+// After all redirects, fall back to pipe if no explicit stdin/stdout.
 void	apply_all_redirs(t_cmd *current, int i, int n_cmds, int **pipes)
 {
 	int		j;

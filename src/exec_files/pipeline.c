@@ -1,5 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/21 17:14:50 by asrichar          #+#    #+#             */
+/*   Updated: 2026/03/21 17:19:56 by asrichar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
 
 static void	cleanup_heredocs(t_cmd *cmd_list)
 {
@@ -36,6 +47,7 @@ static int	wait_all_children(pid_t last_pid, int forked_count)
 	return (1);
 }
 
+// what's with this hidious notation on 65??
 static int	pipeline_loop(t_cmd *cmd_list, int n_cmds, int **pipes, char **envp)
 {
 	t_cmd	*current;
@@ -50,7 +62,7 @@ static int	pipeline_loop(t_cmd *cmd_list, int n_cmds, int **pipes, char **envp)
 	current = cmd_list;
 	while (current)
 	{
-		pid = exec_one_cmd(current, i, n_cmds, pipes, envp);
+		pid = exec_one_cmd(current, &(t_exec_ctx){i, n_cmds, pipes}, envp);
 		if (pid == -2)
 			return (handle_parent_builtin(current, envp));
 		if (pid == -1)

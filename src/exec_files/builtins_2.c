@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_2.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/21 17:01:22 by asrichar          #+#    #+#             */
+/*   Updated: 2026/03/21 17:10:45 by asrichar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <ctype.h>
 #include "minishell.h"
@@ -45,11 +56,11 @@ static int	builtin_export(t_cmd *cmd)
 	return (exit_code);
 }
 
-static int	builtin_unset(t_cmd *cmd)
-{
-	(void)cmd;
-	return (0);
-}
+// static int	builtin_unset(t_cmd *cmd)
+// {
+// 	(void)cmd;
+// 	return (0);
+// }
 
 static int	is_numeric(const char *s)
 {
@@ -83,6 +94,9 @@ static int	builtin_exit(t_cmd *cmd)
 	exit(0);
 	return (0);
 }
+// atoi silently truncates on overflow 
+// — for correctness use atoll and cast down:
+// exit((unsigned char)(long long)atoll(cmd->argv[1]));
 
 int	execute_builtin(t_cmd *cmd, char **envp)
 {
@@ -97,7 +111,10 @@ int	execute_builtin(t_cmd *cmd, char **envp)
 	if (strcmp(cmd->argv[0], "export") == 0)
 		return (builtin_export(cmd));
 	if (strcmp(cmd->argv[0], "unset") == 0)
-		return (builtin_unset(cmd));
+	{
+		(void)cmd;
+		return (0);
+	}
 	if (strcmp(cmd->argv[0], "exit") == 0)
 		return (builtin_exit(cmd));
 	return (1);
