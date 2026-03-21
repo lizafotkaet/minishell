@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:18 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:02:21 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 15:22:38 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 ** Constructs a NULL-terminated char ** from the env.
 ** Each entry is "KEY=VALUE". Caller must free every string and the array.
 */
+
 char	**m_env_to_char_ptr(t_env env)
 {
 	char				**result;
@@ -70,6 +71,7 @@ static bool	parse_env_loop(char **envp, t_env *env)
 ** Parses a NULL-terminated array of "KEY=VALUE" strings (like envp)
 ** into a t_env.
 */
+
 RESULT(t_env)	parse_env(char **envp)
 {
 	int		n;
@@ -97,6 +99,7 @@ RESULT(t_env)	parse_env(char **envp)
 /*
 ** Free the t_env and all its key/value pairs.
 */
+
 void	free_env(t_env *env)
 {
 	int	i;

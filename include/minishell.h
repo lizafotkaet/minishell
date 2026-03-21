@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/21 04:16:43 by liza              #+#    #+#             */
+/*   Updated: 2026/03/21 15:21:44 by liza             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -52,10 +64,10 @@ void	exec_with_path(char *cmd, char **argv, char **envp);
 int		is_builtin(char *cmd);
 int		execute_builtin(t_cmd *cmd, char **envp);
 // builtins_2.c
-int	builtin_echo(t_cmd *cmd);
-int	builtin_pwd(void);
-int	builtin_env(char **envp);
-int	builtin_cd(t_cmd *cmd);
+int		builtin_echo(t_cmd *cmd);
+int		builtin_pwd(void);
+int		builtin_env(char **envp);
+int		builtin_cd(t_cmd *cmd);
 // heredoc.c
 char	*create_heredoc(char *delimiter);
 // redirect.c

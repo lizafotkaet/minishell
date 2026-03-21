@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:03:36 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:03:38 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 04:23:27 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 /*
 ** Returns true if `c` is the start of an operator token (|, <, >).
 */
+
 bool	is_operator_char(char c)
 {
 	return (c == '|' || c == '<' || c == '>');
@@ -25,6 +26,7 @@ bool	is_operator_char(char c)
 ** Returns the length of the operator starting at `s`.
 ** "<<" and ">>" are two-character operators; everything else is one.
 */
+
 int	operator_length(const char *s)
 {
 	if ((*s == '<' && *(s + 1) == '<')
@@ -36,6 +38,7 @@ int	operator_length(const char *s)
 /*
 ** Returns the token type for the operator at `s` with length `len`.
 */
+
 t_token_type	operator_type(const char *s, int len)
 {
 	if (*s == '|')
@@ -54,6 +57,7 @@ t_token_type	operator_type(const char *s, int len)
 ** Returns SUCCESS with a pointer past the closing quote,
 ** or ERROR on unterminated quote.
 */
+
 RESULT(t_const_char_ptr)	skip_quoted_segment(const char *it)
 {
 	RESULT(t_const_char_ptr)	close;
@@ -72,6 +76,7 @@ RESULT(t_const_char_ptr)	skip_quoted_segment(const char *it)
 /*
 ** Advance past one "word" token starting at `it`.
 */
+
 RESULT(t_const_char_ptr)	skip_word(const char *it)
 {
 	RESULT(t_const_char_ptr)	seg;

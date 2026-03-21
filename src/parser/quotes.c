@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:03:04 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:03:06 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 15:23:48 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 ** `start` is the beginning of the string so we don't read before it.
 ** Returns the number of consecutive '\' characters immediately before `pos`.
 */
+
 static int	count_preceding_backslashes(const char *start, const char *pos)
 {
 	int	count;
@@ -39,6 +40,7 @@ static int	count_preceding_backslashes(const char *start, const char *pos)
 **
 ** `start` is the beginning of the string (used as a boundary).
 */
+
 bool	character_is_escaped(const char *start, const char *pos)
 {
 	if (pos <= start)
@@ -53,6 +55,7 @@ bool	character_is_escaped(const char *start, const char *pos)
 ** Returns SUCCESS with a pointer to the closing '"', or ERROR if
 ** the closing quote is never found (unterminated string).
 */
+
 RESULT(t_const_char_ptr)	closing_double_quote_position(
 		const char *quote_position)
 {
@@ -76,6 +79,7 @@ RESULT(t_const_char_ptr)	closing_double_quote_position(
 ** Returns SUCCESS with a pointer to the closing '\'', or ERROR if
 ** the closing quote is never found.
 */
+
 RESULT(t_const_char_ptr)	closing_single_quote_position(
 		const char *quote_position)
 {

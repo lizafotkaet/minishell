@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:25 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:02:27 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 15:22:49 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 /*
 ** Set the previous command exit code in the env.
 */
+
 void	m_env_set_exit_code(t_env *env, int code)
 {
 	if (env == NULL)
@@ -28,6 +29,7 @@ void	m_env_set_exit_code(t_env *env, int code)
 ** Searches the env for an entry whose key matches `key`.
 ** Returns the corresponding value, or "" if not found.
 */
+
 const char	*m_env_find_value(t_env env, const char *key)
 {
 	int	i;
@@ -48,6 +50,7 @@ const char	*m_env_find_value(t_env env, const char *key)
 ** Removes the first entry matching `key` by swapping with the last
 ** element and decrementing count. Frees the removed pair.
 */
+
 bool	m_env_remove(t_env *env, const char *key)
 {
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:03:18 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:03:20 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 15:24:36 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 ** until closing quote.  Returns pointer past the closing quote,
 ** or ERROR on unterminated quote.
 */
+
 static RESULT(t_const_char_ptr)	process_single_quoted(const char *it,
 		t_buffer *buf)
 {
@@ -45,6 +46,7 @@ static RESULT(t_const_char_ptr)	process_single_quoted(const char *it,
 ** to find the end, then processes content up to that point.
 ** Returns pointer past the closing quote, or ERROR on unterminated.
 */
+
 static RESULT(t_const_char_ptr)	process_double_quoted(const char *it,
 		t_env env, t_buffer *buf)
 {
@@ -92,6 +94,7 @@ static RESULT(t_const_char_ptr)	process_unquoted_char(const char *it,
 ** delegate to quoted processors on quote characters.
 ** Returns pointer past the processed text, or ERROR on unterminated quote.
 */
+
 static RESULT(t_const_char_ptr)	substitute_env_with_buffer(const char *it,
 		t_env env, t_buffer *buf)
 {
@@ -128,6 +131,7 @@ static RESULT(t_const_char_ptr)	substitute_env_with_buffer(const char *it,
 ** Returns RESULT(t_char_ptr): SUCCESS with the new heap string,
 ** or ERROR on unterminated quote or allocation failure.
 */
+
 RESULT(t_char_ptr)	substitute_env(const char *input, t_env env)
 {
 	RESULT(t_buffer)			br;
