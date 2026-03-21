@@ -100,14 +100,26 @@ int	builtin_env(t_env *env)
 
 int	builtin_cd(t_cmd *cmd, t_env *env)
 {
-	char	cwd[1024];
+	char		cwd[1024];
+	const char	*path;
 
-	if (!cmd->argv[1] || cmd->argv[2])
+	if (cmd->argv[1] && cmd->argv[2])
 	{
-		write(2, "cd: wrong number of arguments\n", 30);
+		write(2, "cd: too many arguments\n", 23);
 		return (1);
 	}
-	if (chdir(cmd->argv[1]) == -1)
+	if (cmd->argv[1])
+		path = cmd->argv[1];
+	else
+	{
+		path = m_env_find_value(*env, "HOME");
+		if (path[0] == '\0')
+		{
+			write(2, "cd: HOME not set\n", 17);
+			return (1);
+		}
+	}
+	if (chdir(path) == -1)
 	{
 		perror("cd");
 		return (1);
