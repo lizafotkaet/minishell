@@ -106,9 +106,9 @@ static void	free_cmd_list(t_cmd *head)
 int	main(int argc, char **argv, char **envp)
 {
 	char				*line;
-	t_result_t_env		env_res;
+	RESULT(t_env)		env_res;
 	t_env				env;
-	t_result_t_pipeline	pl_res;
+	RESULT(t_pipeline)	pl_res;
 	t_pipeline			pl;
 	t_cmd				*cmd_list;
 	int					last_exit;

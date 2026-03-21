@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:18 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 15:22:38 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/21 17:47:59 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**m_env_to_char_ptr(t_env env)
 
 static bool	parse_env_loop(char **envp, t_env *env)
 {
-	int							n;
+	int								n;
 	RESULT(t_env_key_value_pair)	r;
 
 	n = 0;
