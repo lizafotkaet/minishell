@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_convert.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:13:04 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/21 17:29:37 by asrichar         ###   ########.fr       */
+/*   Updated: 2026/03/21 20:25:57 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,26 @@ static void	fill_redir(t_redir_exec *r, t_redirect *red)
 	}
 }
 
+static char	*heredoc_to_tmpfile(const char *content, int ci, int hi)
+{
+	char	path[64];
+	int		fd;
+
+	snprintf(path, sizeof(path), "/tmp/msh_%d_%d_%d", getpid(), ci, hi);
+	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	if (fd == -1)
+		return (NULL);
+	if (content)
+		write(fd, content, strlen(content));
+	close(fd);
+	return (strdup(path));
+}
+
 static void	fill_redirs(t_cmd *node, t_command *cmd)
 {
 	int	j;
 	int	k;
-
+	t_string_vector contents;
 	j = 0;
 	k = 0;
 	while (j < cmd->redirect_count)
@@ -60,8 +75,11 @@ static void	fill_redirs(t_cmd *node, t_command *cmd)
 		if (cmd->redirects[j].type == E_HEREDOC)
 		{
 			if (cmd->heredoc_contents.size > 0)
+			{
+				contents = cmd->heredoc_contents;
+			}
 				node->heredoc_tmpfile
-					= (char *)cmd->heredoc_contents.data[0];
+					= heredoc_to_tmpfile((char *)contents.data[contents.size - 1], j, 0);
 		}
 		else
 			fill_redir(&node->redirs[k++], &cmd->redirects[j]);

@@ -28,6 +28,12 @@ static int	process_line(char *line, t_env *env)
 	if (pl_res.is_error)
 		return (-1);
 	pl = pl_res.value;
+	if (!read_heredocs(&pl))
+	{
+		free_pipeline(&pl);
+		return (-1);
+	}
+
 	last_exit = -1;
 	cmd_list = pipeline_to_cmd_list(&pl);
 	if (cmd_list)
