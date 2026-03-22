@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:17:16 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 16:48:28 by ebarbash         ###   ########.fr       */
+/*   Updated: 2026/03/22 17:57:12 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@ typedef struct s_pipeline
 	int			command_count;
 }	t_pipeline;
 
-DECLARE_RESULT(t_pipeline);
+typedef struct s_result_t_pipeline
+{
+	bool		is_error;
+	t_pipeline	value;
+}	t_result_t_pipeline;
 
 void					free_pipeline(t_pipeline *pipeline);
 bool					read_heredocs(t_pipeline *pl);
 bool					substitute_all_envs(t_token_vector *tokens,
 							t_env env);
-RESULT(t_pipeline)		create_pipeline(const char *input, t_env *env);
+t_result_t_pipeline		create_pipeline(const char *input, t_env *env);
 
 #endif
