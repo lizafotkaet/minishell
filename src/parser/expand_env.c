@@ -43,10 +43,10 @@ static const char	*expand_exit_code(const char *it, t_env env,
 		return (NULL);
 	if (!m_buffer_write(buf, str, ft_strlen(str)))
 	{
-		FREE(str);
+		free(str);
 		return (NULL);
 	}
-	FREE(str);
+	free(str);
 	return (it + 1);
 }
 
@@ -77,10 +77,10 @@ const char	*expand_variable(const char *it, t_env env,
 	val = m_env_find_value(env, name);
 	if (!m_buffer_write(buf, val, ft_strlen(val)))
 	{
-		FREE(name);
+		free(name);
 		return (NULL);
 	}
-	FREE(name);
+	free(name);
 	return (it + name_len);
 }
 
