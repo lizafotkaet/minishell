@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_print.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:45 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:02:47 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 18:54:10 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static bool	buf_str(t_buffer *buf, const char *s)
 	return (m_buffer_write(buf, s, ft_strlen(s)));
 }
 
-RESULT(t_char_ptr)	pipeline_to_xml(t_pipeline *pl)
+t_result_t_char_ptr	pipeline_to_xml(t_pipeline *pl)
 {
 	RESULT(t_buffer)	br;
 	t_buffer			buf;

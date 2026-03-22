@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:18 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 21:13:07 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 19:07:33 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	**m_env_to_char_ptr(t_env env)
 {
 	char				**result;
 	int					i;
-	RESULT(t_char_ptr)	r;
+	t_result_t_char_ptr	r;
 
 	result = ((char **)ft_calloc((env.count + 1), sizeof(char *)));
 	if (result == NULL)
@@ -35,8 +35,8 @@ char	**m_env_to_char_ptr(t_env env)
 		if (r.is_error)
 		{
 			while (--i >= 0)
-				FREE(result[i]);
-			FREE(result);
+				free(result[i]);
+			free(result);
 			return (NULL);
 		}
 		result[i] = r.value;
@@ -49,7 +49,7 @@ char	**m_env_to_char_ptr(t_env env)
 static bool	parse_env_loop(char **envp, t_env *env)
 {
 	int								n;
-	RESULT(t_env_key_value_pair)	r;
+	t_result_t_env_key_value_pair	r;
 
 	n = 0;
 	while (envp != NULL && envp[n] != NULL)
@@ -72,7 +72,7 @@ static bool	parse_env_loop(char **envp, t_env *env)
 ** into a t_env.
 */
 
-RESULT(t_env)	parse_env(char **envp)
+t_result_t_env	parse_env(char **envp)
 {
 	int		n;
 	t_env	env;
@@ -83,7 +83,8 @@ RESULT(t_env)	parse_env(char **envp)
 	env.capacity = ENV_INITIAL_CAPACITY;
 	if (n > env.capacity)
 		env.capacity = n;
-	env.pairs = ((t_env_key_value_pair *)ft_calloc((env.capacity), sizeof(t_env_key_value_pair)));
+	env.pairs = ((t_env_key_value_pair *)ft_calloc((
+					env.capacity), sizeof(t_env_key_value_pair)));
 	if (env.pairs == NULL)
 		return (((t_result_t_env){.is_error = true}));
 	env.count = 0;
@@ -112,7 +113,7 @@ void	free_env(t_env *env)
 		m_env_key_value_pair_free(&env->pairs[i]);
 		i++;
 	}
-	FREE(env->pairs);
+	free(env->pairs);
 	env->pairs = NULL;
 	env->count = 0;
 	env->capacity = 0;

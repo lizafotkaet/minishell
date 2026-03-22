@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:01:50 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 04:21:25 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 18:56:34 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "command.h"
 #include "libft.h"
@@ -119,7 +118,8 @@ bool	build_command(t_token_vector *tokens, size_t start,
 		return (false);
 	if (cmd->redirect_count > 0)
 	{
-		cmd->redirects = ((t_redirect *)ft_calloc((cmd->redirect_count), sizeof(t_redirect)));
+		cmd->redirects = ((t_redirect *)ft_calloc((
+						cmd->redirect_count), sizeof(t_redirect)));
 		if (!cmd->redirects)
 		{
 			FREE(cmd->argv);
@@ -131,5 +131,3 @@ bool	build_command(t_token_vector *tokens, size_t start,
 		return (false);
 	return (true);
 }
-
-

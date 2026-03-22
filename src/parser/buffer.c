@@ -6,7 +6,7 @@
 /*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:01:33 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 17:29:03 by ebarbash         ###   ########.fr       */
+/*   Updated: 2026/03/22 18:52:42 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 ** Returns SUCCESS with the buffer, or ERROR on allocation failure.
 */
 
-t_result_t_buffer m_buffer_new(void)
+t_result_t_buffer	m_buffer_new(void)
 {
-	t_buffer buf;
+	t_buffer	buf;
 
 	buf.data = ((char *)ft_calloc((BUFFER_INITIAL_CAPACITY), sizeof(char)));
 	if (!buf.data)
