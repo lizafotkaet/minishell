@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:39 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:02:41 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 13:49:51 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,20 @@ static ssize_t	read_line_to_buf(t_buffer *line, int is_tty)
 
 static char	*read_one_heredoc(const char *delim, int is_tty)
 {
-	RESULT(t_buffer)	br;
-	RESULT(t_buffer)	lr;
+	RESULT(t_buffer)	content_r;
+	RESULT(t_buffer)	line_r;
 	t_buffer			content;
 	t_buffer			line;
 	char				*result;
 
-	br = m_buffer_new();
-	if (br.is_error)
+	content_r = m_buffer_new();
+	if (content_r.is_error)
 		return (NULL);
-	content = br.value;
-	lr = m_buffer_new();
-	if (lr.is_error)
+	content = content_r.value;
+	line_r = m_buffer_new();
+	if (line_r.is_error)
 		return (m_buffer_free(&content), NULL);
-	line = lr.value;
+	line = line_r.value;
 	while (read_line_to_buf(&line, is_tty) > 0
 		&& !line_is_delim(line.data, line.size, delim))
 	{
@@ -80,6 +80,8 @@ static char	*read_one_heredoc(const char *delim, int is_tty)
 	m_buffer_free(&content);
 	return (result);
 }
+
+// the function that goes through one command, checks if it has heredocs and goes through all of them
 
 static bool	read_cmd_heredocs(t_command *cmd, int is_tty)
 {
@@ -107,6 +109,8 @@ static bool	read_cmd_heredocs(t_command *cmd, int is_tty)
 	}
 	return (true);
 }
+
+// goes through all the commands in the pipes and looks for heredocs
 
 bool	read_heredocs(t_pipeline *pl)
 {
