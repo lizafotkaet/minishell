@@ -59,7 +59,7 @@ static const char	*append_word(const char *it, t_token_vector *vec)
 	tok.allocated = true;
 	if (!m_token_vector_append(vec, tok))
 	{
-		FREE(tok.content);
+		free(tok.content);
 		return (NULL);
 	}
 	return (word.value);

@@ -6,7 +6,7 @@
 /*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:01:50 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 18:56:34 by ebarbash         ###   ########.fr       */
+/*   Updated: 2026/03/22 20:49:26 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ bool	build_command(t_token_vector *tokens, size_t start,
 						cmd->redirect_count), sizeof(t_redirect)));
 		if (!cmd->redirects)
 		{
-			FREE(cmd->argv);
+			free(cmd->argv);
 			cmd->argv = NULL;
 			return (false);
 		}

@@ -6,7 +6,7 @@
 /*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:16:43 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 17:40:32 by ebarbash         ###   ########.fr       */
+/*   Updated: 2026/03/22 20:01:14 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,19 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+# include "libft.h"
 # include "command.h"
 # include "pipeline.h"
 # include "minishell_p.h"
+# include "buffer.h"
+# include "command.h"
+# include "env.h"
+# include "pipeline.h"
+# include "quotes.h"
+# include "string_vector.h"
+# include "substitute_env_internal.h"
+# include "token.h"
+# include "tokenize.h"
 
 extern int	g_signal;
 

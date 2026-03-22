@@ -106,7 +106,7 @@ void	m_string_vector_free(t_string_vector *vec)
 	i = 0;
 	while (i < vec->size)
 	{
-		FREE(vec->data[i]);
+		free(vec->data[i]);
 		i++;
 	}
 	free(vec->data);

@@ -92,7 +92,7 @@ int	builtin_env(t_env *env)
 		if (!r.is_error)
 		{
 			printf("%s\n", r.value);
-			FREE(r.value);
+			free(r.value);
 		}
 		i++;
 	}

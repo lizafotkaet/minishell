@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_substitute.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 15:25:06 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 15:25:06 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 20:12:40 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "tokenize.h"
 #include "pipeline.h"
 #include "env.h"
@@ -34,7 +35,7 @@ static bool	has_quotes(const char *s)
 static int	substitute_word(t_token *tok, t_env env)
 {
 	bool				unquoted;
-	RESULT(t_char_ptr)	r;
+	t_result_t_char_ptr	r;
 
 	unquoted = !has_quotes(tok->content);
 	r = substitute_env(tok->content, env);
@@ -42,13 +43,13 @@ static int	substitute_word(t_token *tok, t_env env)
 		return (-1);
 	if (r.value[0] == '\0' && unquoted)
 	{
-		FREE(r.value);
+		free(r.value);
 		if (tok->allocated)
-			FREE(tok->content);
+			free(tok->content);
 		return (0);
 	}
 	if (tok->allocated)
-		FREE(tok->content);
+		free(tok->content);
 	tok->content = r.value;
 	tok->allocated = true;
 	return (1);

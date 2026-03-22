@@ -6,10 +6,11 @@
 /*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:18 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 19:07:33 by ebarbash         ###   ########.fr       */
+/*   Updated: 2026/03/22 20:40:50 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "env.h"
 #include "debug_alloc.h"
 #include "libft.h"

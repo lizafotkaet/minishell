@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:18:01 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 18:13:40 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 18:51:37 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_token
 	bool			allocated;
 }	t_token;
 
-void	m_token_free(t_token *token);
+void					m_token_free(t_token *token);
 
 # define TOKEN_VECTOR_INITIAL_CAPACITY 32
 

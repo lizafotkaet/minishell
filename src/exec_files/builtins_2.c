@@ -32,7 +32,7 @@ static int	is_valid_identifier(const char *s, size_t len)
 
 static void	export_one(const char *arg, t_env *env, int *exit_code)
 {
-	RESULT(t_env_key_value_pair)	r;
+	t_result_t_env_key_value_pair	r;
 
 	r = parse_env_var(arg);
 	if (r.is_error)

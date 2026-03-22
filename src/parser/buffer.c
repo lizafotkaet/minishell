@@ -6,7 +6,7 @@
 /*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:01:33 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 18:52:42 by ebarbash         ###   ########.fr       */
+/*   Updated: 2026/03/22 20:49:12 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static bool	buffer_grow(t_buffer *buf, size_t required)
 		return (false);
 	ft_memcpy(new_data, buf->data, buf->size);
 	new_data[buf->size] = '\0';
-	FREE(buf->data);
+	free(buf->data);
 	buf->data = new_data;
 	buf->capacity = new_cap;
 	return (true);
@@ -101,7 +101,7 @@ void	m_buffer_free(t_buffer *buf)
 {
 	if (!buf || !buf->data)
 		return ;
-	FREE(buf->data);
+	free(buf->data);
 	buf->data = NULL;
 	buf->size = 0;
 	buf->capacity = 0;

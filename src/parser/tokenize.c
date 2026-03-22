@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:03:36 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 04:23:27 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 20:16:23 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "tokenize.h"
 #include "libft.h"
 
@@ -58,35 +59,40 @@ t_token_type	operator_type(const char *s, int len)
 ** or ERROR on unterminated quote.
 */
 
-RESULT(t_const_char_ptr)	skip_quoted_segment(const char *it)
+t_result_t_const_char_ptr	skip_quoted_segment(const char *it)
 {
-	RESULT(t_const_char_ptr)	close;
+	t_result_t_const_char_ptr	close;
 
 	if (*it == '"')
 	{
 		close = closing_double_quote_position(it);
-		RETURN_ON_ERROR(t_const_char_ptr, close);
-		return (((t_result_t_const_char_ptr){.is_error = false, .value = (close.value + 1)}));
+		if (close.is_error)
+			return ((t_result_t_const_char_ptr){.is_error = true});
+		return (((t_result_t_const_char_ptr){
+				.is_error = false, .value = (close.value + 1)}));
 	}
 	close = closing_single_quote_position(it);
-	RETURN_ON_ERROR(t_const_char_ptr, close);
-	return (((t_result_t_const_char_ptr){.is_error = false, .value = (close.value + 1)}));
+	if (close.is_error)
+		return ((t_result_t_const_char_ptr){.is_error = true});
+	return (((t_result_t_const_char_ptr){
+			.is_error = false, .value = (close.value + 1)}));
 }
 
 /*
 ** Advance past one "word" token starting at `it`.
 */
 
-RESULT(t_const_char_ptr)	skip_word(const char *it)
+t_result_t_const_char_ptr	skip_word(const char *it)
 {
-	RESULT(t_const_char_ptr)	seg;
+	t_result_t_const_char_ptr	seg;
 
 	while (*it != '\0' && !is_whitespace(*it) && !is_operator_char(*it))
 	{
 		if (*it == '"' || *it == '\'')
 		{
 			seg = skip_quoted_segment(it);
-			RETURN_ON_ERROR(t_const_char_ptr, seg);
+			if (seg.is_error)
+				return ((t_result_t_const_char_ptr){.is_error = true});
 			it = seg.value;
 		}
 		else if (*it == '\\' && *(it + 1) != '\0')

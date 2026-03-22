@@ -6,7 +6,7 @@
 /*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:16:31 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 17:38:41 by ebarbash         ###   ########.fr       */
+/*   Updated: 2026/03/22 20:31:47 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define ENV_H
 
 # include <stddef.h>
+# include <stdbool.h>
 # include "result.h"
+# include "quotes.h"
 
 typedef struct s_env_key_value_pair
 {
