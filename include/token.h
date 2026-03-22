@@ -6,7 +6,7 @@
 /*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:18:01 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 15:20:58 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 18:13:40 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,15 @@ typedef struct s_token_vector
 	size_t	capacity;
 }	t_token_vector;
 
-DECLARE_RESULT(t_token_vector);
+// DECLARE_RESULT(t_token_vector)
 
-RESULT(t_token_vector)	m_token_vector_new(void);
+typedef struct s_result_t_token_vector
+{
+	bool			is_error;
+	t_token_vector	value;
+}	t_result_t_token_vector;
+
+t_result_t_token_vector	m_token_vector_new(void);
 bool					m_token_vector_append(t_token_vector *vec,
 							t_token tok);
 void					m_token_vector_free(t_token_vector *vec);

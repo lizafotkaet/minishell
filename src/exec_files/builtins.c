@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:11:39 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/21 17:12:43 by asrichar         ###   ########.fr       */
+/*   Updated: 2026/03/22 14:16:39 by liza             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	builtin_echo(t_cmd *cmd)
 		printf("\n");
 	return (0);
 }
+
 
 static void	update_pwd_env(t_env *env, const char *new_pwd)
 {
