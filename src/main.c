@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/22 18:36:51 by asrichar          #+#    #+#             */
+/*   Updated: 2026/03/22 18:37:49 by asrichar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 #include "pipeline.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
 
-void	free_cmd_list(t_cmd *head)        /* no longer static */
+void	free_cmd_list(t_cmd *head)
 {
 	t_cmd	*next;
 
@@ -24,7 +36,7 @@ static int	process_line(char *line, t_env *env)
 	t_cmd				*cmd_list;
 	int					last_exit;
 
-	pl_res = create_pipeline(line, env); // *env -> env
+	pl_res = create_pipeline(line, env);
 	if (pl_res.is_error)
 		return (-1);
 	pl = pl_res.value;
@@ -45,6 +57,15 @@ static int	process_line(char *line, t_env *env)
 	return (last_exit);
 }
 
+static void	check_signal(int *last_exit)
+{
+	if (g_signal == SIGINT)
+	{
+		*last_exit = 130;
+		g_signal = 0;
+	}
+}
+
 static int	shell_loop(t_env *env)
 {
 	char	*line;
@@ -55,14 +76,17 @@ static int	shell_loop(t_env *env)
 	while (1)
 	{
 		line = readline("minishell$ ");
+		check_signal(&last_exit);
 		if (!line)
 			break ;
 		if (*line)
 			add_history(line);
+		env->previous_command_exit_code = last_exit;
 		ret = process_line(line, env);
 		free(line);
-		if (ret >= 0)
+		if (ret >= 0 && g_signal != SIGINT)
 			last_exit = ret;
+		check_signal(&last_exit);
 	}
 	return (last_exit);
 }

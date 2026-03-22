@@ -6,18 +6,21 @@
 /*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:15:55 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/21 17:28:17 by asrichar         ###   ########.fr       */
+/*   Updated: 2026/03/22 18:32:57 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	g_signal = 0; /* defined here, extern'd in the header */
+int	g_signal = 0;
 
 void	handle_sigint(int sig)
 {
 	g_signal = sig;
 	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	setup_signals(void)
