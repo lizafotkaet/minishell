@@ -4,7 +4,7 @@ a.out
 minishell
 
 # test text files
-*.txt
+# *.txt
 
 # Prerequisites
 *.d

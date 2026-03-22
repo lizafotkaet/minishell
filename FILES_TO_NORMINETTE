@@ -1,0 +1,13 @@
+
+HEADERS:
+    1. buffer.h - OK
+    2. command_print.h - OK (not sure if it's a necessary one)
+    3. command.h - OK
+    4. debug_alloc.h - WILL DELETE LATER (after everything else is norminetted)
+    5. env.h - OK
+    6. minishell_p.h - OK
+    7. minishell - OK
+    8. pipeline_print.h - OK
+
+C FILES:
+    1. 
