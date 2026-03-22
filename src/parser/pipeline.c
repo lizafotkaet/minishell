@@ -6,7 +6,7 @@
 /*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:58 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 17:07:54 by ebarbash         ###   ########.fr       */
+/*   Updated: 2026/03/22 19:27:10 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static bool	build_all_commands(t_token_vector *tokens, t_pipeline *pl)
 	int		ci;
 
 	pl->command_count = count_pipes(*tokens) + 1;
-	pl->commands = ((t_command *)ft_calloc((pl->command_count), sizeof(t_command)));
+	pl->commands = ((t_command *)ft_calloc((
+					pl->command_count), sizeof(t_command)));
 	if (!pl->commands)
 		return (false);
 	seg_start = 0;
@@ -81,7 +82,7 @@ static bool	build_all_commands(t_token_vector *tokens, t_pipeline *pl)
 ** or ERROR on syntax error or allocation failure.
 */
 
-t_result_t_pipeline	create_pipeline(const char *input, t_env *env) // env => (*env)
+t_result_t_pipeline	create_pipeline(const char *input, t_env *env)
 {
 	t_result_t_token_vector	tr;
 	t_token_vector			tokens;
@@ -94,9 +95,11 @@ t_result_t_pipeline	create_pipeline(const char *input, t_env *env) // env => (*e
 		return (((t_result_t_pipeline){.is_error = true}));
 	tokens = tr.value;
 	if (tokens.size == 0)
-		return (m_token_vector_free(&tokens), ((t_result_t_pipeline){.is_error = true}));
-	if (!substitute_all_envs(&tokens, *env)) // env => (*env)
-		return (m_token_vector_free(&tokens), ((t_result_t_pipeline){.is_error = true}));
+		return (m_token_vector_free(&tokens), ((
+					t_result_t_pipeline){.is_error = true}));
+	if (!substitute_all_envs(&tokens, *env))
+		return (m_token_vector_free(&tokens), ((
+					t_result_t_pipeline){.is_error = true}));
 	ft_bzero(&pl, sizeof(t_pipeline));
 	if (!build_all_commands(&tokens, &pl))
 	{

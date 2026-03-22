@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_pair.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:11 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:02:13 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 19:03:15 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	m_env_key_value_pair_free(t_env_key_value_pair *pair)
 	if (pair == NULL)
 		return ;
 	if (pair->key != NULL)
-		FREE(pair->key);
+		free(pair->key);
 	if (pair->value != NULL)
-		FREE(pair->value);
+		free(pair->value);
 	pair->key = NULL;
 	pair->value = NULL;
 }
@@ -59,7 +59,7 @@ bool	m_env_key_value_pair_key_equals(t_env_key_value_pair pair,
 /*
 ** Constructs a "KEY=VALUE" C string from a key-value pair.
 */
-RESULT(t_char_ptr)	m_env_key_value_pair_to_c_str(t_env_key_value_pair pair)
+t_result_t_char_ptr	m_env_key_value_pair_to_c_str(t_env_key_value_pair pair)
 {
 	char	*eq;
 	char	*result;
@@ -70,7 +70,7 @@ RESULT(t_char_ptr)	m_env_key_value_pair_to_c_str(t_env_key_value_pair pair)
 	if (eq == NULL)
 		return (((t_result_t_char_ptr){.is_error = true}));
 	result = ft_strjoin(eq, pair.value);
-	FREE(eq);
+	free(eq);
 	if (result == NULL)
 		return (((t_result_t_char_ptr){.is_error = true}));
 	return (((t_result_t_char_ptr){.is_error = false, .value = (result)}));
@@ -79,7 +79,7 @@ RESULT(t_char_ptr)	m_env_key_value_pair_to_c_str(t_env_key_value_pair pair)
 /*
 ** Parses a single "KEY=VALUE" string into a t_env_key_value_pair.
 */
-RESULT(t_env_key_value_pair)	parse_env_var(const char *str)
+t_result_t_env_key_value_pair	parse_env_var(const char *str)
 {
 	t_env_key_value_pair	pair;
 	char					*eq;
@@ -103,5 +103,6 @@ RESULT(t_env_key_value_pair)	parse_env_var(const char *str)
 		m_env_key_value_pair_free(&pair);
 		return (((t_result_t_env_key_value_pair){.is_error = true}));
 	}
-	return (((t_result_t_env_key_value_pair){.is_error = false, .value = (pair)}));
+	return (((t_result_t_env_key_value_pair){.is_error = false,
+			.value = (pair)}));
 }

@@ -3,12 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   command_print.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 10:02:31 by liza              #+#    #+#             */
-/*   Updated: 2026/03/20 10:02:32 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 20:21:39 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+	This header was only needed for testing the parser
+	to print out the pipeline 
+	in the xml format
+*/
 
 #ifndef COMMAND_PRINT_H
 # define COMMAND_PRINT_H

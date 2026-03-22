@@ -3,17 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   command_print.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:01:44 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 04:19:59 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 20:42:44 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#
+/*
+	This stuff was only used for testing the parser
+	and printing out the pipeline
+	in xml format when testing
+	None of this code is part of the shell code
+*/
+#include "minishell.h"
 #include "command_print.h"
 #include "string_vector.h"
 #include "libft.h"
+#include "buffer.h"
 
 static bool	buf_str(t_buffer *buf, const char *s)
 {

@@ -28,7 +28,7 @@ void	free_pipeline(t_pipeline *pipeline)
 			free_command(&pipeline->commands[i]);
 			i++;
 		}
-		FREE(pipeline->commands);
+		free(pipeline->commands);
 	}
 }
 
@@ -43,20 +43,20 @@ void	free_command(t_command *cmd)
 		i = 0;
 		while (i < cmd->argc)
 		{
-			FREE(cmd->argv[i]);
+			free(cmd->argv[i]);
 			i++;
 		}
-		FREE(cmd->argv);
+		free(cmd->argv);
 	}
 	if (cmd->redirects)
 	{
 		i = 0;
 		while (i < cmd->redirect_count)
 		{
-			FREE(cmd->redirects[i].target);
+			free(cmd->redirects[i].target);
 			i++;
 		}
-		FREE(cmd->redirects);
+		free(cmd->redirects);
 	}
 	m_string_vector_free(&cmd->heredoc_contents);
 }

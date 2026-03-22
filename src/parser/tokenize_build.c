@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_build.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:03:31 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 15:25:06 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 20:11:10 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static const char	*append_operator(const char *it, t_token_vector *vec)
 	tok.allocated = true;
 	if (!m_token_vector_append(vec, tok))
 	{
-		FREE(tok.content);
+		free(tok.content);
 		return (NULL);
 	}
 	return (it + len);
@@ -46,7 +46,7 @@ static const char	*append_operator(const char *it, t_token_vector *vec)
 
 static const char	*append_word(const char *it, t_token_vector *vec)
 {
-	RESULT(t_const_char_ptr)	word;
+	t_result_t_const_char_ptr	word;
 	t_token						tok;
 
 	word = skip_word(it);
@@ -59,7 +59,7 @@ static const char	*append_word(const char *it, t_token_vector *vec)
 	tok.allocated = true;
 	if (!m_token_vector_append(vec, tok))
 	{
-		FREE(tok.content);
+		free(tok.content);
 		return (NULL);
 	}
 	return (word.value);
@@ -69,10 +69,10 @@ static const char	*append_word(const char *it, t_token_vector *vec)
 ** Splits `input` into a t_token_vector of typed tokens.
 */
 
-RESULT(t_token_vector)	tokenize_string(const char *input)
+t_result_t_token_vector	tokenize_string(const char *input)
 {
 	const char				*it;
-	RESULT(t_token_vector)	vr;
+	t_result_t_token_vector	vr;
 	t_token_vector			vec;
 
 	if (input == NULL)
@@ -92,8 +92,8 @@ RESULT(t_token_vector)	tokenize_string(const char *input)
 		else
 			it = append_word(it, &vec);
 		if (it == NULL)
-			return (m_token_vector_free(&vec), ((t_result_t_token_vector){.is_error = true}));
+			return (m_token_vector_free(&vec), ((
+						t_result_t_token_vector){.is_error = true}));
 	}
 	return (((t_result_t_token_vector){.is_error = false, .value = (vec)}));
 }
-

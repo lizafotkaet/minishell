@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:03:24 by liza              #+#    #+#             */
-/*   Updated: 2026/03/19 13:03:26 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 20:06:51 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "token.h"
 #include "libft.h"
 #include "debug_alloc.h"
@@ -23,7 +24,7 @@ void	m_token_free(t_token *token)
 		return ;
 	if (token->allocated && token->content != NULL)
 	{
-		FREE(token->content);
+		free(token->content);
 		token->content = NULL;
 	}
 }
@@ -32,11 +33,12 @@ void	m_token_free(t_token *token)
 ** Initialise a new t_token_vector with TOKEN_VECTOR_INITIAL_CAPACITY.
 ** Returns SUCCESS with the vector, or ERROR on allocation failure.
 */
-RESULT(t_token_vector)	m_token_vector_new(void)
+t_result_t_token_vector	m_token_vector_new(void)
 {
 	t_token_vector	vec;
 
-	vec.data = ((t_token *)ft_calloc((TOKEN_VECTOR_INITIAL_CAPACITY), sizeof(t_token)));
+	vec.data = ((t_token *)ft_calloc((
+					TOKEN_VECTOR_INITIAL_CAPACITY), sizeof(t_token)));
 	if (!vec.data)
 		return (((t_result_t_token_vector){.is_error = true}));
 	vec.size = 0;
@@ -63,7 +65,7 @@ static bool	token_vector_grow(t_token_vector *vec, size_t required)
 	if (!new_data)
 		return (false);
 	ft_memcpy(new_data, vec->data, vec->size * sizeof(t_token));
-	FREE(vec->data);
+	free(vec->data);
 	vec->data = new_data;
 	vec->capacity = new_cap;
 	return (true);
@@ -99,7 +101,7 @@ void	m_token_vector_free(t_token_vector *vec)
 		m_token_free(&vec->data[i]);
 		i++;
 	}
-	FREE(vec->data);
+	free(vec->data);
 	vec->data = NULL;
 	vec->size = 0;
 	vec->capacity = 0;

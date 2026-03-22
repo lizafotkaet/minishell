@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:25 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 15:22:49 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 19:10:30 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,13 @@ static bool	env_grow(t_env *env, int required)
 	new_cap = env->capacity;
 	while (new_cap < required)
 		new_cap *= 2;
-	new_pairs = ((t_env_key_value_pair *)ft_calloc((new_cap), sizeof(t_env_key_value_pair)));
+	new_pairs = ((t_env_key_value_pair *)ft_calloc((
+					new_cap), sizeof(t_env_key_value_pair)));
 	if (new_pairs == NULL)
 		return (false);
 	ft_memcpy(new_pairs, env->pairs,
 		sizeof(t_env_key_value_pair) * env->count);
-	FREE(env->pairs);
+	free(env->pairs);
 	env->pairs = new_pairs;
 	env->capacity = new_cap;
 	return (true);

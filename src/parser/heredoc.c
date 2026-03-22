@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:02:39 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 13:49:51 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 19:16:22 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static ssize_t	read_line_to_buf(t_buffer *line, int is_tty)
 
 static char	*read_one_heredoc(const char *delim, int is_tty)
 {
-	RESULT(t_buffer)	content_r;
-	RESULT(t_buffer)	line_r;
+	t_result_t_buffer	content_r;
+	t_result_t_buffer	line_r;
 	t_buffer			content;
 	t_buffer			line;
 	char				*result;
@@ -81,13 +81,14 @@ static char	*read_one_heredoc(const char *delim, int is_tty)
 	return (result);
 }
 
-// the function that goes through one command, checks if it has heredocs and goes through all of them
+// the function that goes through one command, 
+// checks if it has heredocs and goes through all of them
 
 static bool	read_cmd_heredocs(t_command *cmd, int is_tty)
 {
-	RESULT(t_string_vector)	vr;
-	int						i;
-	char					*content;
+	t_result_t_string_vector	vr;
+	int							i;
+	char						*content;
 
 	vr = m_string_vector_new();
 	if (vr.is_error)
@@ -102,8 +103,8 @@ static bool	read_cmd_heredocs(t_command *cmd, int is_tty)
 			if (!content)
 				return (false);
 			if (!m_string_vector_append(&cmd->heredoc_contents, content))
-				return (FREE(content), false);
-			FREE(content);
+				return (free(content), false);
+			free(content);
 		}
 		i++;
 	}
