@@ -1,3 +1,11 @@
+christalsextensivenotes.txt
+main_backup.c
+a.out
+minishell
+
+# test text files
+# *.txt
+
 # Prerequisites
 *.d
 
@@ -53,3 +61,5 @@ dkms.conf
 
 # debug information files
 *.dwo
+.DS_Store
+**/.DS_Store
