@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sergei_pilman <sergei_pilman@student.42    +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:11:36 by sergei_pilm       #+#    #+#             */
-/*   Updated: 2025/08/18 20:24:15 by sergei_pilm      ###   ########.fr       */
+/*   Updated: 2026/03/22 21:44:45 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,39 +53,3 @@ double	ft_atof(const char *str)
 	else
 		return (whole + fraction);
 }
-
-// test:
-// int main(void)
-// {
-//     char *test_cases[] = {
-//         "123.45",
-//         "-123.45", 
-//         "0.5",
-//         "-0.5",
-//         "42",
-//         "-42",
-//         "0.0",
-//         "-0.0",
-//         "3.14159",
-//         "-3.14159",
-//         NULL
-//     };
-    
-//     printf("Testing ft_atof vs standard atof:\n");
-//     printf("%-12s %-15s %-15s %-10s\n", "Input", "ft_atof", "atof", "Match?");
-//     printf("%-12s %-15s %-15s %-10s\n", "-----", "-------", "----", "------");
-    
-//     for (int i = 0; test_cases[i] != NULL; i++)
-//     {
-//         double my_result = ft_atof(test_cases[i]);
-//         double std_result = atof(test_cases[i]);
-        
-//         printf("%-12s %-15.6f %-15.6f %-10s\n", 
-//                test_cases[i], 
-//                my_result, 
-//                std_result,
-//                (my_result == std_result) ? "YES" : "NO");
-//     }
-    
-//     return 0;
-// }
