@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_vector.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:03:10 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 15:24:08 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 19:30:32 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 ** Returns SUCCESS with the vector, or ERROR on allocation failure.
 */
 
-RESULT(t_string_vector)	m_string_vector_new(void)
+t_result_t_string_vector	m_string_vector_new(void)
 {
 	t_string_vector	vec;
 
-	vec.data = ((char **)ft_calloc((STRING_VECTOR_INITIAL_CAPACITY), sizeof(char *)));
+	vec.data = ((char **)ft_calloc((
+					STRING_VECTOR_INITIAL_CAPACITY), sizeof(char *)));
 	if (!vec.data)
 		return (((t_result_t_string_vector){.is_error = true}));
 	vec.size = 0;
@@ -54,7 +55,7 @@ static bool	vector_grow(t_string_vector *vec, size_t required)
 	if (!new_data)
 		return (false);
 	ft_memcpy(new_data, vec->data, vec->size * sizeof(char *));
-	FREE(vec->data);
+	free(vec->data);
 	vec->data = new_data;
 	vec->capacity = new_cap;
 	return (true);
@@ -108,7 +109,7 @@ void	m_string_vector_free(t_string_vector *vec)
 		FREE(vec->data[i]);
 		i++;
 	}
-	FREE(vec->data);
+	free(vec->data);
 	vec->data = NULL;
 	vec->size = 0;
 	vec->capacity = 0;
