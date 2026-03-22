@@ -3,9 +3,6 @@ main_backup.c
 a.out
 minishell
 
-# test text files
-*.txt
-
 # Prerequisites
 *.d
 
