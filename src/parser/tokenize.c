@@ -66,11 +66,11 @@ RESULT(t_const_char_ptr)	skip_quoted_segment(const char *it)
 	{
 		close = closing_double_quote_position(it);
 		RETURN_ON_ERROR(t_const_char_ptr, close);
-		return (SUCCESS(t_const_char_ptr, close.value + 1));
+		return (((t_result_t_const_char_ptr){.is_error = false, .value = (close.value + 1)}));
 	}
 	close = closing_single_quote_position(it);
 	RETURN_ON_ERROR(t_const_char_ptr, close);
-	return (SUCCESS(t_const_char_ptr, close.value + 1));
+	return (((t_result_t_const_char_ptr){.is_error = false, .value = (close.value + 1)}));
 }
 
 /*
@@ -94,5 +94,5 @@ RESULT(t_const_char_ptr)	skip_word(const char *it)
 		else
 			it++;
 	}
-	return (SUCCESS(t_const_char_ptr, it));
+	return (((t_result_t_const_char_ptr){.is_error = false, .value = (it)}));
 }

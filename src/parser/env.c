@@ -82,7 +82,7 @@ static bool	env_grow(t_env *env, int required)
 	new_cap = env->capacity;
 	while (new_cap < required)
 		new_cap *= 2;
-	new_pairs = ALLOC(t_env_key_value_pair, new_cap);
+	new_pairs = ((t_env_key_value_pair *)ft_calloc((new_cap), sizeof(t_env_key_value_pair)));
 	if (new_pairs == NULL)
 		return (false);
 	ft_memcpy(new_pairs, env->pairs,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buffer.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 10:02:21 by liza              #+#    #+#             */
-/*   Updated: 2026/03/20 10:02:24 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 17:29:44 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,17 @@ typedef struct s_buffer
 	size_t	capacity;
 }	t_buffer;
 
-DECLARE_RESULT(t_buffer);
+//DECLARE_RESULT(t_buffer);
 
-RESULT(t_buffer)	m_buffer_new(void);
+typedef struct s_result_t_buffer
+{
+	bool		is_error;
+	t_buffer	value;
+}	t_result_t_buffer;
+
+t_result_t_buffer	m_buffer_new(void);
 bool				m_buffer_write(t_buffer *buf, const char *src,
-					size_t n);
+						size_t n);
 char				*m_buffer_read(t_buffer *buf);
 void				m_buffer_free(t_buffer *buf);
 

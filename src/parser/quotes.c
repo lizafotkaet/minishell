@@ -65,10 +65,10 @@ RESULT(t_const_char_ptr)	closing_double_quote_position(
 	while (*it != '\0')
 	{
 		if (*it == '"' && !character_is_escaped(quote_position, it))
-			return (SUCCESS(t_const_char_ptr, it));
+			return (((t_result_t_const_char_ptr){.is_error = false, .value = (it)}));
 		it++;
 	}
-	return (ERROR(t_const_char_ptr));
+	return (((t_result_t_const_char_ptr){.is_error = true}));
 }
 
 /*
@@ -89,8 +89,8 @@ RESULT(t_const_char_ptr)	closing_single_quote_position(
 	while (*it != '\0')
 	{
 		if (*it == '\'')
-			return (SUCCESS(t_const_char_ptr, it));
+			return (((t_result_t_const_char_ptr){.is_error = false, .value = (it)}));
 		it++;
 	}
-	return (ERROR(t_const_char_ptr));
+	return (((t_result_t_const_char_ptr){.is_error = true}));
 }

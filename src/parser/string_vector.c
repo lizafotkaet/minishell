@@ -24,12 +24,12 @@ RESULT(t_string_vector)	m_string_vector_new(void)
 {
 	t_string_vector	vec;
 
-	vec.data = ALLOC(char *, STRING_VECTOR_INITIAL_CAPACITY);
+	vec.data = ((char **)ft_calloc((STRING_VECTOR_INITIAL_CAPACITY), sizeof(char *)));
 	if (!vec.data)
-		return (ERROR(t_string_vector));
+		return (((t_result_t_string_vector){.is_error = true}));
 	vec.size = 0;
 	vec.capacity = STRING_VECTOR_INITIAL_CAPACITY;
-	return (SUCCESS(t_string_vector, vec));
+	return (((t_result_t_string_vector){.is_error = false, .value = (vec)}));
 }
 
 /*
@@ -50,7 +50,7 @@ static bool	vector_grow(t_string_vector *vec, size_t required)
 	new_cap = vec->capacity;
 	while (new_cap <= required)
 		new_cap *= 2;
-	new_data = ALLOC(char *, new_cap);
+	new_data = ((char **)ft_calloc((new_cap), sizeof(char *)));
 	if (!new_data)
 		return (false);
 	ft_memcpy(new_data, vec->data, vec->size * sizeof(char *));

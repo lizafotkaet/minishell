@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:17:16 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 04:17:17 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 16:48:28 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ void					free_pipeline(t_pipeline *pipeline);
 bool					read_heredocs(t_pipeline *pl);
 bool					substitute_all_envs(t_token_vector *tokens,
 							t_env env);
-RESULT(t_pipeline)		create_pipeline(const char *input, t_env env);
+RESULT(t_pipeline)		create_pipeline(const char *input, t_env *env);
 
 #endif

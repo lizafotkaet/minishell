@@ -36,12 +36,12 @@ RESULT(t_token_vector)	m_token_vector_new(void)
 {
 	t_token_vector	vec;
 
-	vec.data = ALLOC(t_token, TOKEN_VECTOR_INITIAL_CAPACITY);
+	vec.data = ((t_token *)ft_calloc((TOKEN_VECTOR_INITIAL_CAPACITY), sizeof(t_token)));
 	if (!vec.data)
-		return (ERROR(t_token_vector));
+		return (((t_result_t_token_vector){.is_error = true}));
 	vec.size = 0;
 	vec.capacity = TOKEN_VECTOR_INITIAL_CAPACITY;
-	return (SUCCESS(t_token_vector, vec));
+	return (((t_result_t_token_vector){.is_error = false, .value = (vec)}));
 }
 
 /*
@@ -59,7 +59,7 @@ static bool	token_vector_grow(t_token_vector *vec, size_t required)
 	new_cap = vec->capacity;
 	while (new_cap <= required)
 		new_cap *= 2;
-	new_data = ALLOC(t_token, new_cap);
+	new_data = ((t_token *)ft_calloc((new_cap), sizeof(t_token)));
 	if (!new_data)
 		return (false);
 	ft_memcpy(new_data, vec->data, vec->size * sizeof(t_token));

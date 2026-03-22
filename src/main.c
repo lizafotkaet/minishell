@@ -24,7 +24,7 @@ static int	process_line(char *line, t_env *env)
 	t_cmd				*cmd_list;
 	int					last_exit;
 
-	pl_res = create_pipeline(line, *env);
+	pl_res = create_pipeline(line, env); // *env -> env
 	if (pl_res.is_error)
 		return (-1);
 	pl = pl_res.value;
@@ -33,7 +33,6 @@ static int	process_line(char *line, t_env *env)
 		free_pipeline(&pl);
 		return (-1);
 	}
-
 	last_exit = -1;
 	cmd_list = pipeline_to_cmd_list(&pl);
 	if (cmd_list)
@@ -76,6 +75,8 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	if (argc != 1)
+		return (-1);
 	env_res = parse_env(envp);
 	if (env_res.is_error)
 		return (1);

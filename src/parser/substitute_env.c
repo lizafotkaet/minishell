@@ -29,15 +29,15 @@ static RESULT(t_const_char_ptr)	process_single_quoted(const char *it,
 
 	close = closing_single_quote_position(it);
 	if (close.is_error)
-		return (ERROR(t_const_char_ptr));
+		return (((t_result_t_const_char_ptr){.is_error = true}));
 	it++;
 	while (it < close.value)
 	{
 		if (!m_buffer_write(buf, it, 1))
-			return (ERROR(t_const_char_ptr));
+			return (((t_result_t_const_char_ptr){.is_error = true}));
 		it++;
 	}
-	return (SUCCESS(t_const_char_ptr, close.value + 1));
+	return (((t_result_t_const_char_ptr){.is_error = false, .value = (close.value + 1)}));
 }
 
 /*
@@ -55,16 +55,16 @@ static RESULT(t_const_char_ptr)	process_double_quoted(const char *it,
 
 	close = closing_double_quote_position(it);
 	if (close.is_error)
-		return (ERROR(t_const_char_ptr));
+		return (((t_result_t_const_char_ptr){.is_error = true}));
 	end = close.value;
 	it++;
 	while (it < end)
 	{
 		it = expand_char_within_double_quotes(it, end, env, buf);
 		if (it == NULL)
-			return (ERROR(t_const_char_ptr));
+			return (((t_result_t_const_char_ptr){.is_error = true}));
 	}
-	return (SUCCESS(t_const_char_ptr, end + 1));
+	return (((t_result_t_const_char_ptr){.is_error = false, .value = (end + 1)}));
 }
 
 static RESULT(t_const_char_ptr)	process_unquoted_char(const char *it,
@@ -74,19 +74,19 @@ static RESULT(t_const_char_ptr)	process_unquoted_char(const char *it,
 	{
 		it++;
 		if (!m_buffer_write(buf, it, 1))
-			return (ERROR(t_const_char_ptr));
-		return (SUCCESS(t_const_char_ptr, it + 1));
+			return (((t_result_t_const_char_ptr){.is_error = true}));
+		return (((t_result_t_const_char_ptr){.is_error = false, .value = (it + 1)}));
 	}
 	if (*it == '$')
 	{
 		it = expand_variable(it, env, buf);
 		if (it == NULL)
-			return (ERROR(t_const_char_ptr));
-		return (SUCCESS(t_const_char_ptr, it));
+			return (((t_result_t_const_char_ptr){.is_error = true}));
+		return (((t_result_t_const_char_ptr){.is_error = false, .value = (it)}));
 	}
 	if (!m_buffer_write(buf, it, 1))
-		return (ERROR(t_const_char_ptr));
-	return (SUCCESS(t_const_char_ptr, it + 1));
+		return (((t_result_t_const_char_ptr){.is_error = true}));
+	return (((t_result_t_const_char_ptr){.is_error = false, .value = (it + 1)}));
 }
 
 /*
@@ -121,7 +121,7 @@ static RESULT(t_const_char_ptr)	substitute_env_with_buffer(const char *it,
 			it = r.value;
 		}
 	}
-	return (SUCCESS(t_const_char_ptr, it));
+	return (((t_result_t_const_char_ptr){.is_error = false, .value = (it)}));
 }
 
 /*
@@ -140,20 +140,20 @@ RESULT(t_char_ptr)	substitute_env(const char *input, t_env env)
 	char						*result;
 
 	if (input == NULL)
-		return (ERROR(t_char_ptr));
+		return (((t_result_t_char_ptr){.is_error = true}));
 	br = m_buffer_new();
 	if (br.is_error)
-		return (ERROR(t_char_ptr));
+		return (((t_result_t_char_ptr){.is_error = true}));
 	buf = br.value;
 	r = substitute_env_with_buffer(input, env, &buf);
 	if (r.is_error)
 	{
 		m_buffer_free(&buf);
-		return (ERROR(t_char_ptr));
+		return (((t_result_t_char_ptr){.is_error = true}));
 	}
 	result = m_buffer_read(&buf);
 	m_buffer_free(&buf);
 	if (!result)
-		return (ERROR(t_char_ptr));
-	return (SUCCESS(t_char_ptr, result));
+		return (((t_result_t_char_ptr){.is_error = true}));
+	return (((t_result_t_char_ptr){.is_error = false, .value = (result)}));
 }

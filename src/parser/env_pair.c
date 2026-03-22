@@ -65,15 +65,15 @@ RESULT(t_char_ptr)	m_env_key_value_pair_to_c_str(t_env_key_value_pair pair)
 	char	*result;
 
 	if (pair.key == NULL || pair.value == NULL)
-		return (ERROR(t_char_ptr));
+		return (((t_result_t_char_ptr){.is_error = true}));
 	eq = ft_strjoin(pair.key, "=");
 	if (eq == NULL)
-		return (ERROR(t_char_ptr));
+		return (((t_result_t_char_ptr){.is_error = true}));
 	result = ft_strjoin(eq, pair.value);
 	FREE(eq);
 	if (result == NULL)
-		return (ERROR(t_char_ptr));
-	return (SUCCESS(t_char_ptr, result));
+		return (((t_result_t_char_ptr){.is_error = true}));
+	return (((t_result_t_char_ptr){.is_error = false, .value = (result)}));
 }
 
 /*
@@ -86,7 +86,7 @@ RESULT(t_env_key_value_pair)	parse_env_var(const char *str)
 
 	pair = m_env_key_value_pair_new();
 	if (str == NULL)
-		return (ERROR(t_env_key_value_pair));
+		return (((t_result_t_env_key_value_pair){.is_error = true}));
 	eq = ft_strchr(str, '=');
 	if (eq == NULL)
 	{
@@ -101,7 +101,7 @@ RESULT(t_env_key_value_pair)	parse_env_var(const char *str)
 	if (pair.key == NULL || pair.value == NULL)
 	{
 		m_env_key_value_pair_free(&pair);
-		return (ERROR(t_env_key_value_pair));
+		return (((t_result_t_env_key_value_pair){.is_error = true}));
 	}
-	return (SUCCESS(t_env_key_value_pair, pair));
+	return (((t_result_t_env_key_value_pair){.is_error = false, .value = (pair)}));
 }

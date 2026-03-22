@@ -76,10 +76,10 @@ RESULT(t_token_vector)	tokenize_string(const char *input)
 	t_token_vector			vec;
 
 	if (input == NULL)
-		return (ERROR(t_token_vector));
+		return (((t_result_t_token_vector){.is_error = true}));
 	vr = m_token_vector_new();
 	if (vr.is_error)
-		return (ERROR(t_token_vector));
+		return (((t_result_t_token_vector){.is_error = true}));
 	vec = vr.value;
 	it = input;
 	while (*it != '\0')
@@ -92,8 +92,8 @@ RESULT(t_token_vector)	tokenize_string(const char *input)
 		else
 			it = append_word(it, &vec);
 		if (it == NULL)
-			return (m_token_vector_free(&vec), ERROR(t_token_vector));
+			return (m_token_vector_free(&vec), ((t_result_t_token_vector){.is_error = true}));
 	}
-	return (SUCCESS(t_token_vector, vec));
+	return (((t_result_t_token_vector){.is_error = false, .value = (vec)}));
 }
 

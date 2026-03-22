@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buffer.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 13:01:33 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 04:19:08 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 17:29:03 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@
 ** Returns SUCCESS with the buffer, or ERROR on allocation failure.
 */
 
-RESULT(t_buffer)	m_buffer_new(void)
+t_result_t_buffer m_buffer_new(void)
 {
-	t_buffer	buf;
+	t_buffer buf;
 
-	buf.data = ALLOC(char, BUFFER_INITIAL_CAPACITY);
+	buf.data = ((char *)ft_calloc((BUFFER_INITIAL_CAPACITY), sizeof(char)));
 	if (!buf.data)
-		return (ERROR(t_buffer));
+		return (((t_result_t_buffer){.is_error = true}));
 	buf.data[0] = '\0';
 	buf.size = 0;
 	buf.capacity = BUFFER_INITIAL_CAPACITY;
-	return (SUCCESS(t_buffer, buf));
+	return (((t_result_t_buffer){.is_error = false, .value = (buf)}));
 }
 
 /*
@@ -50,7 +50,7 @@ static bool	buffer_grow(t_buffer *buf, size_t required)
 	new_cap = buf->capacity;
 	while (new_cap < required)
 		new_cap *= 2;
-	new_data = ALLOC(char, new_cap);
+	new_data = ((char *)ft_calloc((new_cap), sizeof(char)));
 	if (!new_data)
 		return (false);
 	ft_memcpy(new_data, buf->data, buf->size);

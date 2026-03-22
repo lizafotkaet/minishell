@@ -114,12 +114,12 @@ bool	build_command(t_token_vector *tokens, size_t start,
 	ft_bzero(cmd, sizeof(t_command));
 	if (!count_cmd_parts(tokens, start, end, cmd))
 		return (false);
-	cmd->argv = ALLOC(char *, cmd->argc + 1);
+	cmd->argv = ((char **)ft_calloc((cmd->argc + 1), sizeof(char *)));
 	if (!cmd->argv)
 		return (false);
 	if (cmd->redirect_count > 0)
 	{
-		cmd->redirects = ALLOC(t_redirect, cmd->redirect_count);
+		cmd->redirects = ((t_redirect *)ft_calloc((cmd->redirect_count), sizeof(t_redirect)));
 		if (!cmd->redirects)
 		{
 			FREE(cmd->argv);

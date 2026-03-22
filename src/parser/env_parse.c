@@ -25,7 +25,7 @@ char	**m_env_to_char_ptr(t_env env)
 	int					i;
 	RESULT(t_char_ptr)	r;
 
-	result = ALLOC(char *, env.count + 1);
+	result = ((char **)ft_calloc((env.count + 1), sizeof(char *)));
 	if (result == NULL)
 		return (NULL);
 	i = 0;
@@ -83,17 +83,17 @@ RESULT(t_env)	parse_env(char **envp)
 	env.capacity = ENV_INITIAL_CAPACITY;
 	if (n > env.capacity)
 		env.capacity = n;
-	env.pairs = ALLOC(t_env_key_value_pair, env.capacity);
+	env.pairs = ((t_env_key_value_pair *)ft_calloc((env.capacity), sizeof(t_env_key_value_pair)));
 	if (env.pairs == NULL)
-		return (ERROR(t_env));
+		return (((t_result_t_env){.is_error = true}));
 	env.count = 0;
 	env.previous_command_exit_code = 0;
 	if (!parse_env_loop(envp, &env))
 	{
 		free_env(&env);
-		return (ERROR(t_env));
+		return (((t_result_t_env){.is_error = true}));
 	}
-	return (SUCCESS(t_env, env));
+	return (((t_result_t_env){.is_error = false, .value = (env)}));
 }
 
 /*
