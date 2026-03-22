@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:16:43 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 17:40:32 by ebarbash         ###   ########.fr       */
+/*   Updated: 2026/03/22 19:24:13 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,11 @@ int		run_pipeline(t_cmd *cmd_list, t_env *env);
 t_cmd	*pipeline_to_cmd_list(t_pipeline *pl);
 // main.c
 void	free_cmd_list(t_cmd *head);
+// builtins
+void	update_pwd_env(t_env *env, const char *new_pwd);
+int		builtin_export(t_cmd *cmd, t_env *env);
+int		builtin_unset(t_cmd *cmd, t_env *env);
+// cmd_convert_utils.c
+int		count_redirs(t_command *cmd);
 
 #endif
