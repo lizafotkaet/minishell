@@ -3,31 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_convert.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:13:04 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/21 20:25:57 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 19:28:20 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "pipeline.h"
-
-static int	count_redirs(t_command *cmd)
-{
-	int	n;
-	int	j;
-
-	n = 0;
-	j = 0;
-	while (j < cmd->redirect_count)
-	{
-		if (cmd->redirects[j].type != E_HEREDOC)
-			n++;
-		j++;
-	}
-	return (n);
-}
 
 static void	fill_redir(t_redir_exec *r, t_redirect *red)
 {
@@ -65,9 +49,11 @@ static char	*heredoc_to_tmpfile(const char *content, int ci, int hi)
 
 static void	fill_redirs(t_cmd *node, t_command *cmd)
 {
-	int	j;
-	int	k;
-	t_string_vector contents;
+	t_string_vector	contents;
+	int				j;
+	int				k;
+	char			*heredoc_content;
+
 	j = 0;
 	k = 0;
 	while (j < cmd->redirect_count)
@@ -78,8 +64,8 @@ static void	fill_redirs(t_cmd *node, t_command *cmd)
 			{
 				contents = cmd->heredoc_contents;
 			}
-				node->heredoc_tmpfile
-					= heredoc_to_tmpfile((char *)contents.data[contents.size - 1], j, 0);
+			heredoc_content = (char *)contents.data[contents.size - 1];
+			node->heredoc_tmpfile = heredoc_to_tmpfile(heredoc_content, j, 0);
 		}
 		else
 			fill_redir(&node->redirs[k++], &cmd->redirects[j]);

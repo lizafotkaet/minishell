@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:01:22 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/22 14:18:49 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 19:19:49 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	print_export(t_env *env)
 	}
 }
 
-static int	builtin_export(t_cmd *cmd, t_env *env)
+int	builtin_export(t_cmd *cmd, t_env *env)
 {
 	int	i;
 	int	exit_code;
@@ -77,7 +77,7 @@ static int	builtin_export(t_cmd *cmd, t_env *env)
 	return (exit_code);
 }
 
-static int	builtin_unset(t_cmd *cmd, t_env *env)
+int	builtin_unset(t_cmd *cmd, t_env *env)
 {
 	int	i;
 
@@ -85,59 +85,4 @@ static int	builtin_unset(t_cmd *cmd, t_env *env)
 	while (cmd->argv[i])
 		m_env_remove(env, cmd->argv[i++]);
 	return (0);
-}
-
-static int	is_numeric(const char *s)
-{
-	if (*s == '+' || *s == '-')
-		s++;
-	if (*s == '\0')
-		return (0);
-	while (*s)
-	{
-		if (*s < '0' || *s > '9')
-			return (0);
-		s++;
-	}
-	return (1);
-}
-
-static int	builtin_exit(t_cmd *cmd)
-{
-	if (cmd->argv[1] && cmd->argv[2])
-	{
-		write(2, "exit: too many arguments\n", 25);
-		return (1);
-	}
-	if (cmd->argv[1] && !is_numeric(cmd->argv[1]))
-	{
-		write(2, "exit: numeric argument required\n", 32);
-		exit(2);
-	}
-	if (cmd->argv[1])
-		exit((unsigned char)atoi(cmd->argv[1]));
-	exit(0);
-	return (0);
-}
-// atoi silently truncates on overflow 
-// — for correctness use atoll and cast down:
-// exit((unsigned char)(long long)atoll(cmd->argv[1]));
-
-int	execute_builtin(t_cmd *cmd, t_env *env)
-{
-	if (strcmp(cmd->argv[0], "echo") == 0)
-		return (builtin_echo(cmd));
-	if (strcmp(cmd->argv[0], "pwd") == 0)
-		return (builtin_pwd());
-	if (strcmp(cmd->argv[0], "env") == 0)
-		return (builtin_env(env));
-	if (strcmp(cmd->argv[0], "cd") == 0)
-		return (builtin_cd(cmd, env));
-	if (strcmp(cmd->argv[0], "export") == 0)
-		return (builtin_export(cmd, env));
-	if (strcmp(cmd->argv[0], "unset") == 0)
-		return (builtin_unset(cmd, env));
-	if (strcmp(cmd->argv[0], "exit") == 0)
-		return (builtin_exit(cmd));
-	return (1);
 }

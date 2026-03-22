@@ -6,58 +6,79 @@
 /*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:15:08 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/21 17:36:53 by asrichar         ###   ########.fr       */
+/*   Updated: 2026/03/22 19:17:57 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	apply_all_builtin_redirs(t_cmd *cmd)
+static int	apply_heredoc(t_cmd *cmd)
 {
-	int	j;
 	int	fd;
-	int	flags;
 
-	if (cmd->heredoc_tmpfile)
+	if (!cmd->heredoc_tmpfile)
+		return (0);
+	fd = open(cmd->heredoc_tmpfile, O_RDONLY);
+	if (fd == -1)
 	{
-		fd = open(cmd->heredoc_tmpfile, O_RDONLY);
+		perror(cmd->heredoc_tmpfile);
+		return (-1);
+	}
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	return (0);
+}
+
+static int	apply_out_redir(t_cmd *cmd, int j)
+{
+	int	flags;
+	int	fd;
+
+	if (cmd->redirs[j].type == REDIR_APPEND)
+		flags = O_WRONLY | O_CREAT | O_APPEND;
+	else
+		flags = O_WRONLY | O_CREAT | O_TRUNC;
+	fd = open(cmd->redirs[j].file, flags, 0644);
+	if (fd == -1)
+	{
+		perror(cmd->redirs[j].file);
+		return (-1);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (0);
+}
+
+static int	apply_one_redir(t_cmd *cmd, int j)
+{
+	int	fd;
+
+	if (cmd->redirs[j].type == REDIR_IN)
+	{
+		fd = open(cmd->redirs[j].file, O_RDONLY);
 		if (fd == -1)
 		{
-			perror(cmd->heredoc_tmpfile);
+			perror(cmd->redirs[j].file);
 			return (-1);
 		}
 		dup2(fd, STDIN_FILENO);
 		close(fd);
+		return (0);
 	}
+	return (apply_out_redir(cmd, j));
+}
+
+static int	apply_all_builtin_redirs(t_cmd *cmd)
+{
+	int	j;
+
+	if (apply_heredoc(cmd) == -1)
+		return (-1);
 	j = 0;
 	while (j < cmd->n_redirs)
 	{
-		if (cmd->redirs[j].type == REDIR_IN)
-		{
-			fd = open(cmd->redirs[j].file, O_RDONLY);
-			if (fd == -1)
-			{
-				perror(cmd->redirs[j].file);
-				return (-1);
-			}
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
-		else
-		{
-			if (cmd->redirs[j].type == REDIR_APPEND)
-				flags = O_WRONLY | O_CREAT | O_APPEND;
-			else
-				flags = O_WRONLY | O_CREAT | O_TRUNC;
-			fd = open(cmd->redirs[j].file, flags, 0644);
-			if (fd == -1)
-			{
-				perror(cmd->redirs[j].file);
-				return (-1);
-			}
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
+		if (apply_one_redir(cmd, j) == -1)
+			return (-1);
 		j++;
 	}
 	return (0);

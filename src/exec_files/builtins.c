@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:11:39 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/22 14:16:39 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 18:54:29 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,6 @@ int	builtin_echo(t_cmd *cmd)
 	return (0);
 }
 
-
-static void	update_pwd_env(t_env *env, const char *new_pwd)
-{
-	t_env_key_value_pair	pair;
-	const char				*old;
-
-	old = m_env_find_value(*env, "PWD");
-	pair.key = ft_strdup("OLDPWD");
-	pair.value = ft_strdup(old);
-	if (pair.key && pair.value)
-		m_env_append(env, pair);
-	else
-		m_env_key_value_pair_free(&pair);
-	pair.key = ft_strdup("PWD");
-	pair.value = ft_strdup(new_pwd);
-	if (pair.key && pair.value)
-		m_env_append(env, pair);
-	else
-		m_env_key_value_pair_free(&pair);
-}
-
 int	builtin_pwd(void)
 {
 	char	cwd[1024];
@@ -99,33 +78,22 @@ int	builtin_env(t_env *env)
 	return (0);
 }
 
-int	builtin_cd(t_cmd *cmd, t_env *env)
+void	update_pwd_env(t_env *env, const char *new_pwd)
 {
-	char		cwd[1024];
-	const char	*path;
+	t_env_key_value_pair	pair;
+	const char				*old;
 
-	if (cmd->argv[1] && cmd->argv[2])
-	{
-		write(2, "cd: too many arguments\n", 23);
-		return (1);
-	}
-	if (cmd->argv[1])
-		path = cmd->argv[1];
+	old = m_env_find_value(*env, "PWD");
+	pair.key = ft_strdup("OLDPWD");
+	pair.value = ft_strdup(old);
+	if (pair.key && pair.value)
+		m_env_append(env, pair);
 	else
-	{
-		path = m_env_find_value(*env, "HOME");
-		if (path[0] == '\0')
-		{
-			write(2, "cd: HOME not set\n", 17);
-			return (1);
-		}
-	}
-	if (chdir(path) == -1)
-	{
-		perror("cd");
-		return (1);
-	}
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		update_pwd_env(env, cwd);
-	return (0);
+		m_env_key_value_pair_free(&pair);
+	pair.key = ft_strdup("PWD");
+	pair.value = ft_strdup(new_pwd);
+	if (pair.key && pair.value)
+		m_env_append(env, pair);
+	else
+		m_env_key_value_pair_free(&pair);
 }
