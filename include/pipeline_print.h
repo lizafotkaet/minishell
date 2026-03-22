@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_print.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:16:50 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 04:16:51 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 17:41:42 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@
 # include "pipeline.h"
 # include "command_print.h"
 
-RESULT(t_char_ptr)	pipeline_to_xml(t_pipeline *pl);
+t_result_t_char_ptr	pipeline_to_xml(t_pipeline *pl);
 
 #endif

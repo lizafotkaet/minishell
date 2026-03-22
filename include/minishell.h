@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ebarbash <ebarbash@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:16:43 by liza              #+#    #+#             */
-/*   Updated: 2026/03/21 15:21:44 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/22 17:40:32 by ebarbash         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <signal.h>
-#include "command.h"
-#include "pipeline.h"
-#include "minishell_p.h"
+# include <signal.h>
+# include "command.h"
+# include "pipeline.h"
+# include "minishell_p.h"
 
 extern int	g_signal;
 
