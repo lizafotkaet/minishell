@@ -6,7 +6,7 @@
 /*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:15:55 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/22 18:32:57 by asrichar         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:47:25 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
+// This function configures how the shell responds to two 
+// UNIX signals: SIGINT and SIGQUIT.
 void	setup_signals(void)
 {
 	struct sigaction	sa_int;

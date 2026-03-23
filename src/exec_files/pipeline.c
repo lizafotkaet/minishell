@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: liza <liza@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:14:50 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/22 14:07:01 by liza             ###   ########.fr       */
+/*   Updated: 2026/03/23 17:28:37 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static int	wait_all_children(pid_t last_pid, int forked_count)
 	return (1);
 }
 
-// what's with this hidious notation on 65??
 static int	pipeline_loop(t_cmd *cmd_list, int n_cmds, int **pipes, t_env *env)
 {
 	t_cmd	*current;

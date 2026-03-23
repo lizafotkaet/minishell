@@ -1,51 +1,72 @@
-NAME      = minishell
-CC        = cc
-CFLAGS    = -Wall -Wextra -Werror
-RM        = rm -f
+NAME		= minishell
 
-OBJ_DIR   = obj
-LIBFT_DIR = libft
-LIBFT     = $(LIBFT_DIR)/libft.a
+CC		= cc
+CFLAGS		= -Wall -Wextra -Werror -I include -I libft
 
-INCLUDES  = -I include -I libft
+LIBFT_DIR	= libft
+LIBFT		= $(LIBFT_DIR)/libft.a
+LDFLAGS		= -lreadline
 
-PARSER_SRCS = $(wildcard src/parser/*.c)
-EXEC_SRCS   = $(wildcard src/exec_files/*.c)
-MAIN_SRC    = src/main.c
+SRC_DIR		= src
+OBJ_DIR		= obj
 
-PARSER_OBJS = $(patsubst src/parser/%.c,    $(OBJ_DIR)/parser_%.o, $(PARSER_SRCS))
-EXEC_OBJS   = $(patsubst src/exec_files/%.c,$(OBJ_DIR)/exec_%.o,   $(EXEC_SRCS))
-MAIN_OBJ    = $(OBJ_DIR)/main.o
+SRCS		= src/main.c \
+		  src/exec_files/builtins.c \
+		  src/exec_files/builtins_2.c \
+		  src/exec_files/builtins_3.c \
+		  src/exec_files/cmd_convert.c \
+		  src/exec_files/cmd_convert_utils.c \
+		  src/exec_files/exec.c \
+		  src/exec_files/exec_path.c \
+		  src/exec_files/heredoc.c \
+		  src/exec_files/pipeline.c \
+		  src/exec_files/pipes.c \
+		  src/exec_files/redirect.c \
+		  src/exec_files/redirect_builtin.c \
+		  src/exec_files/signals.c \
+		  src/parser/buffer.c \
+		  src/parser/command.c \
+		  src/parser/command_print.c \
+		  src/parser/debug_alloc.c \
+		  src/parser/env.c \
+		  src/parser/env_pair.c \
+		  src/parser/env_parse.c \
+		  src/parser/expand_env.c \
+		  src/parser/heredoc.c \
+		  src/parser/pipeline.c \
+		  src/parser/pipeline_print.c \
+		  src/parser/pipeline_utils.c \
+		  src/parser/process_env_quotes.c \
+		  src/parser/quotes.c \
+		  src/parser/string_vector.c \
+		  src/parser/substitute_env.c \
+		  src/parser/token.c \
+		  src/parser/tokenize.c \
+		  src/parser/tokenize_build.c \
+		  src/parser/tokenize_substitute.c \
+		  src/parser/whitespace.c
 
-OBJS = $(PARSER_OBJS) $(EXEC_OBJS) $(MAIN_OBJ)
+OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 all: $(LIBFT) $(NAME)
-
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
-
-$(OBJ_DIR)/parser_%.o: src/parser/%.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(OBJ_DIR)/exec_%.o: src/exec_files/%.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(OBJ_DIR)/main.o: src/main.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
-	$(RM) -r $(OBJ_DIR)
 	$(MAKE) -C $(LIBFT_DIR) clean
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	$(RM) $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
+	rm -f $(NAME)
 
 re: fclean all
 

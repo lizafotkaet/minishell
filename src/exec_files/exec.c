@@ -6,7 +6,7 @@
 /*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:14:33 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/21 17:14:38 by asrichar         ###   ########.fr       */
+/*   Updated: 2026/03/23 19:46:46 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	run_child_process(t_cmd *cur, t_exec_ctx *ctx, t_env *env)
 	if (is_builtin(cur->argv[0]))
 		exit(execute_builtin(cur, env));
 	envp = m_env_to_char_ptr(*env);
-	exec_with_path(cur->argv[0], cur->argv, envp);
+	exec_with_path(cur->argv[0], cur->argv, envp, env);
 }
 
 static pid_t	fork_and_exec(t_cmd *current, t_exec_ctx *ctx, t_env *env)

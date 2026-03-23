@@ -6,7 +6,7 @@
 /*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 17:14:14 by asrichar          #+#    #+#             */
-/*   Updated: 2026/03/21 17:14:27 by asrichar         ###   ########.fr       */
+/*   Updated: 2026/03/23 19:47:02 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	search_path(char *cmd, char **argv, char **envp, char *path)
 	exit(127);
 }
 
-void	exec_with_path(char *cmd, char **argv, char **envp)
+void	exec_with_path(char *cmd, char **argv, char **envp, t_env *env)
 {
 	char	*path;
 
@@ -63,7 +63,7 @@ void	exec_with_path(char *cmd, char **argv, char **envp)
 		exec_with_slash(cmd, argv, envp);
 		return ;
 	}
-	path = getenv("PATH");
+	path = (char *)m_env_find_value(*env, "PATH");
 	if (!path)
 	{
 		write(2, "command not found\n", 18);

@@ -6,7 +6,7 @@
 /*   By: asrichar <asrichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 04:16:43 by liza              #+#    #+#             */
-/*   Updated: 2026/03/22 19:24:13 by asrichar         ###   ########.fr       */
+/*   Updated: 2026/03/23 19:42:12 by asrichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ int		**alloc_pipes(int n_cmds);
 void	close_parent_pipes(int **pipes, int count);
 void	free_pipes(int **pipes, int n_cmds);
 // exec_path.c
-void	exec_with_path(char *cmd, char **argv, char **envp);
+// void	exec_with_path(char *cmd, char **argv, char **envp);
+void	exec_with_path(char *cmd, char **argv, char **envp, t_env *env);
 // builtins.c
 int		is_builtin(char *cmd);
 int		execute_builtin(t_cmd *cmd, t_env *env);
